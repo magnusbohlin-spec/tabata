@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Intervall">
+<meta name="apple-mobile-web-app-title" content="Jag &amp; Kroppen">
 <meta name="theme-color" content="#0A1721">
-<title>Intervall</title>
+<title>Jag &amp; Kroppen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -26,33 +26,30 @@ body{color:var(--ink);font-family:var(--f);font-size:15px;display:flex;flex-dire
   -webkit-user-select:none;user-select:none;font-variant-numeric:tabular-nums}
 button,input,select{font-family:inherit;color:inherit;background:none;border:none;font-size:inherit}
 button{cursor:pointer}
-.screen{flex:1;display:none;flex-direction:column;min-height:0}
+.screen{flex:1;display:none;flex-direction:column;min-height:0;background:var(--bg);color:var(--ink)}
 .screen.on{display:flex}
 .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:500}
 
-/* masthead */
 .mast{padding:26px 18px 16px;flex:none}
-.mast h1{font-size:30px;font-weight:700;letter-spacing:-.025em;margin:0;line-height:1}
+.mast h1{font-size:29px;font-weight:700;letter-spacing:-.025em;margin:0;line-height:1}
 .mast .sport{margin-top:9px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;
   color:var(--amber);font-weight:600;display:flex;align-items:center;gap:9px}
 .mast .sport::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(240,166,60,.4),transparent)}
 
-/* veckologg */
 .week{display:flex;gap:5px;padding:0 18px 18px;border-bottom:1px solid var(--line);flex:none;align-items:flex-end}
 .wd{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
 .wl{font-size:9px;letter-spacing:.1em;color:var(--dimmer);text-transform:uppercase}
 .wc{width:100%;height:30px;border-radius:5px;border:1px solid var(--line);display:flex;
-  align-items:center;justify-content:center;font-size:12px;font-weight:600;color:transparent}
+  align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--dimmer)}
 .wd.on .wc{background:rgba(240,166,60,.16);border-color:rgba(240,166,60,.5);color:var(--amber)}
 .wd.today .wc{border-color:var(--line2)}
 .wd.today.on .wc{border-color:var(--amber)}
-.wsum{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer);
-  padding:0 18px;margin:-8px 0 0;flex:none}
 
 #home{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .pad{padding:20px 18px 40px}
 .sec{margin-bottom:26px}
 .sec>.lbl{display:block;margin-bottom:11px}
+.intro{font-size:12.5px;color:var(--dim);line-height:1.6;margin:0 0 13px}
 
 .code{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;background:var(--card)}
 .code input{flex:1;padding:13px 14px;font-size:13px;outline:none;min-width:0}
@@ -105,7 +102,7 @@ button{cursor:pointer}
 .disc{border-top:1px solid var(--line)}
 .disc>button{width:100%;padding:15px 0;display:flex;justify-content:space-between;align-items:center}
 .disc>button span:last-child{color:var(--dim);font-size:11px}
-.disc .body{display:none;padding:0 0 20px}
+.disc .body{display:none;padding:2px 0 22px}
 .disc.open .body{display:block}
 .dial{margin-bottom:16px}
 .dial-t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
@@ -125,30 +122,37 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 .keys div{padding:4px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}
 .keys b{color:var(--amber);font-weight:600;width:26px;flex:none}
 
-/* kör */
+/* ══ KÖR ══ */
 #run{position:relative}
-.prog{height:2px;background:rgba(255,255,255,.07);flex:none}
+/* vila vänder hela skärmen — glansbart på en meters håll */
+#run.rest,#run.roundrest{
+  --bg:#4DC3C7; --ink:#052227;
+  --dim:rgba(5,34,39,.68); --dimmer:rgba(5,34,39,.46);
+  --line:rgba(5,34,39,.16); --line2:rgba(5,34,39,.3);
+  --card:rgba(5,34,39,.1); --amber:#052227;
+}
+#run.roundrest{--bg:#2F9EA4}
+.prog{height:3px;background:var(--line);flex:none}
 .prog span{display:block;height:100%;width:0;background:var(--amber)}
-#run.rest .prog span,#run.roundrest .prog span{background:var(--teal)}
-#run.prep .prog span{background:var(--dim)}
 .rtop{display:flex;justify-content:space-between;padding:16px 18px 0}
-.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 22px;min-height:0}
-.ph{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
-#run.work .ph{color:var(--amber)} #run.rest .ph,#run.roundrest .ph{color:var(--teal)}
-.ex{font-size:clamp(23px,6.6vw,34px);font-weight:600;letter-spacing:-.015em;line-height:1.15;text-align:center;margin:0;max-width:16ch}
-.sd{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);height:14px;margin-top:9px}
-.clk{font-size:clamp(88px,30vw,160px);font-weight:300;line-height:1;letter-spacing:-.04em;margin:14px 0 0}
-#run.work .clk{color:var(--amber)} #run.rest .clk,#run.roundrest .clk{color:var(--teal)}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px;min-height:0}
+.ph{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;font-weight:600}
+#run.work .ph{color:var(--amber)}
+.ex{font-size:clamp(29px,8.6vw,48px);font-weight:600;letter-spacing:-.02em;line-height:1.08;
+  text-align:center;margin:0;max-width:14ch}
+.sd{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);height:15px;margin-top:11px;font-weight:500}
+.clk{font-size:clamp(72px,25vw,132px);font-weight:300;line-height:1;letter-spacing:-.04em;margin:16px 0 0}
+#run.work .clk{color:var(--amber)}
 .upnext{margin-top:18px;text-align:center;min-height:30px}
 .upnext .k{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dimmer)}
-.upnext .v{font-size:13.5px;color:var(--dim);margin-top:4px;font-weight:500}
+.upnext .v{font-size:14px;color:var(--dim);margin-top:4px;font-weight:500}
 .nxi{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dimmer);margin-top:10px}
 .cue{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
-  background:rgba(240,166,60,.94);color:#1A0E00;font-size:11vw;font-weight:600;letter-spacing:-.02em}
+  background:#F0A63C;color:#1A0E00;font-size:11vw;font-weight:600;letter-spacing:-.02em}
 .cue.on{display:flex}
 .strip{display:flex;gap:2px;padding:0 18px;height:14px;align-items:center;flex:none}
-.strip i{flex:1;height:2px;background:rgba(255,255,255,.12);border-radius:1px;transition:height .15s,background .15s}
-.strip i.done{background:rgba(255,255,255,.3)}
+.strip i{flex:1;height:2px;background:var(--line2);border-radius:1px;transition:height .15s,background .15s}
+.strip i.done{background:var(--dim)}
 .strip i.now{background:var(--amber);height:8px}
 .strip .brk{flex:0 0 1px;background:var(--dimmer);height:8px}
 .rfoot{display:flex;border-top:1px solid var(--line);margin-top:14px}
@@ -171,21 +175,11 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 
 <section id="home" class="screen on">
   <div class="mast">
-    <h1>Jag & Kroppen</h1>
+    <h1>Jag &amp; Kroppen</h1>
     <div class="sport"><span>Surf · Klättring · MTB</span></div>
   </div>
   <div class="week" id="week"></div>
   <div class="pad">
-
-    <div class="sec">
-      <span class="lbl">Dagens kod</span>
-      <div class="code">
-        <input id="codeIn" placeholder="IV1 2x30/15/60 PU RL DP …" autocapitalize="characters" autocorrect="off" spellcheck="false">
-        <button id="codeGo">Läs in</button>
-      </div>
-      <div class="msg" id="codeMsg"></div>
-      <div class="hist" id="hist"></div>
-    </div>
 
     <div class="sec">
       <span class="lbl">Var och hur</span>
@@ -195,6 +189,19 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
     <div class="sec">
       <span class="lbl">Pass</span>
       <div id="list"></div>
+    </div>
+
+    <div class="disc" id="d0">
+      <button><span class="lbl">Anpassa</span><span>▾</span></button>
+      <div class="body">
+        <p class="intro">För dagar som kräver ett avsteg. Ta diskussionen i Claude-appen — beskriv hur kroppen känns och vad du har tillgång till, och klistra in koden du får tillbaka.</p>
+        <div class="code">
+          <input id="codeIn" placeholder="IV1 2x30/15/60 PU RL DP …" autocapitalize="characters" autocorrect="off" spellcheck="false">
+          <button id="codeGo">Läs in</button>
+        </div>
+        <div class="msg" id="codeMsg"></div>
+        <div class="hist" id="hist"></div>
+      </div>
     </div>
 
     <div class="disc" id="d1">
@@ -258,8 +265,8 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 <script>
 /* ════ BIBLIOTEK ════
    c=kod · sp=engelskt uttal · tags: bar/weight/jump
-   park = variant på utegym (stänger finns, vikter inte) · gym = laddad variant
-   side: 'alt' full tid per sida | 'split' 15/15                                  */
+   park = variant på utegym · gym = laddad variant
+   side: 'alt' full tid per sida | 'split' 15/15                     */
 const LIB={
  'Pull-ups':{c:'PU',tags:['bar'],alt:['Inverted row','Superman pull'],gym:'Lat pulldown'},
  'Inverted row':{c:'IR',tags:['bar'],alt:['Superman pull','Prone Y-T-W'],gym:'Hantelrodd'},
@@ -351,18 +358,18 @@ const Store={
     if(window.storage)await window.storage.set(KEY,s);else localStorage.setItem(KEY,s)}catch(e){}}
 };
 function saveState(){
-  const cut=Date.now()-70*864e5, keep={};
+  const cut=Date.now()-70*864e5,keep={};
   Object.entries(days).forEach(([k,v])=>{if(new Date(k).getTime()>cut)keep[k]=v});
   days=keep;
   Store.set({history,lastDone,days,voice:st.voice,audio:st.audio});
 }
 async function loadState(){
-  const d=await Store.get(); if(!d)return;
+  const d=await Store.get();if(!d)return;
   history=Array.isArray(d.history)?d.history.slice(0,5):[];
-  lastDone=d.lastDone||null; days=d.days||{};
+  lastDone=d.lastDone||null;days=d.days||{};
   if(d.voice){st.voice=d.voice;$('vSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===st.voice))}
   if(d.audio){st.audio=d.audio;$('aSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.a===st.audio))}
-  audioNote(); render();
+  audioNote();render();
 }
 
 /* ════ ERSÄTTNING ════ */
@@ -380,7 +387,7 @@ function resolveOne(start,orig,bad,cut,used){
     if(!ok(c,bad)||used.has(c))continue;
     return {n:c,orig,sw:c!==orig};
   }
-  for(const c of chain) if(ok(c,bad)&&!(cut.has(orig)&&c===start)) return {n:c,orig,sw:c!==orig};
+  for(const c of chain) if(ok(c,bad)&&!(cut.has(orig)&&c===start))return {n:c,orig,sw:c!==orig};
   return null;
 }
 function resolve(p){
@@ -442,13 +449,13 @@ function loadCode(raw){
   const src=(raw!==undefined?raw:$('codeIn').value),m=$('codeMsg');
   if(!src||!src.trim())return;
   try{const p=parseCode(src);applyPass(p,src);
-    m.className='msg';m.textContent=p.name+' inläst — '+p.ex.length+' stationer.';$('codeIn').value=''}
+    m.className='msg';m.textContent=p.name+' inläst — ligger överst bland passen.';$('codeIn').value=''}
   catch(e){m.className='msg err';m.textContent=e.message}
 }
 async function copyCode(p){
   const c=makeCode(p);
   try{await navigator.clipboard.writeText(c);flash('Kod kopierad.')}
-  catch(e){$('codeIn').value=c;flash('Kod i fältet ovan — markera och kopiera.')}
+  catch(e){$('d0').classList.add('open');$('codeIn').value=c;flash('Kod i fältet under Anpassa — markera och kopiera.')}
 }
 function flash(t){const m=$('codeMsg');m.className='msg';m.textContent=t;
   setTimeout(()=>{if(m.textContent===t)m.textContent=''},4000)}
@@ -456,12 +463,12 @@ function flash(t){const m=$('codeMsg');m.className='msg';m.textContent=t;
 /* ════ LJUD ════ */
 let ac=null;
 function audioSession(){
-  try{if('audioSession' in navigator) navigator.audioSession.type = st.audio==='music'?'transient':'playback'}catch(e){}
+  try{if('audioSession' in navigator)navigator.audioSession.type=st.audio==='music'?'transient':'playback'}catch(e){}
 }
 function audioNote(){
   $('aNote').textContent = st.audio==='music'
-    ? 'Musik från Apple Music fortsätter spela och sänks kort under pip och röst. Kräver att ringläget är på — ljudlöst läge tystar appen.'
-    : 'Appen tar över ljudet helt och hörs även med telefonen på ljudlöst. Pausar musik som spelas i andra appar.';
+    ? 'Musiken fortsätter spela och sänks kort under pip och röst. Kräver att ringläget är på — ljudlöst tystar appen.'
+    : 'Appen hörs även med telefonen på ljudlöst, men pausar musik som spelas i andra appar.';
 }
 function unlock(){
   audioSession();
@@ -540,7 +547,7 @@ function enter(s){
     say(PHR.ready[st.voice==='en'?'en':'sv']+'. '+nameFor(cur.ex[0].n));
   }
   if(s.type==='work'){
-    $('ph').textContent='Arbete';$('exN').textContent=s.name;
+    $('ph').textContent='Kör';$('exN').textContent=s.name;
     $('rRound').textContent='Omgång '+s.round+'/'+cur.rounds;
     $('sd').textContent=s.side==='alt'?(s.round%2?'Vänster sida':'Höger sida'):s.side==='split'?'Byte efter halva':'';
     upnext(s.next?(s.nextIsRound?'Efter omgångsvilan':'Nästa'):'Sista stationen',s.next||'');
@@ -549,7 +556,7 @@ function enter(s){
   }
   if(s.type==='rest'){
     $('ph').textContent='Vila';$('exN').textContent=s.next;$('sd').textContent='';
-    upnext('Kommande','');$('nxi').textContent='';
+    upnext('Nästa station','');$('nxi').textContent='';
     SND.rest();setTimeout(()=>say(nameFor(s.next)),420);
   }
   if(s.type==='roundrest'){
@@ -587,14 +594,14 @@ function finish(){
 const z=d=>d.getUTCFullYear()+p2(d.getUTCMonth()+1)+p2(d.getUTCDate())+'T'+p2(d.getUTCHours())+p2(d.getUTCMinutes())+p2(d.getUTCSeconds())+'Z';
 function toCal(){
   if(!lastLog)return;const p=lastLog.p;
-  const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Intervall//SV','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-   'BEGIN:VEVENT','UID:'+Date.now()+'@intervall','DTSTAMP:'+z(new Date()),
+  const body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//JagOchKroppen//SV','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+   'BEGIN:VEVENT','UID:'+Date.now()+'@jagochkroppen','DTSTAMP:'+z(new Date()),
    'DTSTART:'+z(lastLog.start),'DTEND:'+z(lastLog.end),
-   'SUMMARY:'+(p.key==='X'?p.name:'Intervall '+p.key+' — '+p.name),
+   'SUMMARY:'+(p.key==='X'?p.name:'Pass '+p.key+' — '+p.name),
    'DESCRIPTION:'+p.ex.map((e,i)=>(i+1)+'. '+e.n).join('\\n')+'\\n\\n'+p.rounds+' omgångar · '+st.work+'/'+st.rest,
    'CATEGORIES:Träning','END:VEVENT','END:VCALENDAR'].join('\r\n');
   const url=URL.createObjectURL(new Blob([body],{type:'text/calendar;charset=utf-8'}));
-  const a=document.createElement('a');a.href=url;a.download='intervall-'+iso(new Date())+'.ics';
+  const a=document.createElement('a');a.href=url;a.download='pass-'+iso(new Date())+'.ics';
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
   $('dHint').textContent='Öppna filen så frågar iPhone vilken kalender passet ska in i.';
 }
@@ -613,10 +620,10 @@ function sparkline(n,R){
 function renderWeek(){
   const now=new Date(),di=(now.getDay()+6)%7,mon=new Date(now);
   mon.setDate(now.getDate()-di);mon.setHours(0,0,0,0);
-  const L=['M','T','O','T','F','L','S'];let h='',c=0;
+  const L=['M','T','O','T','F','L','S'];let h='';
   for(let i=0;i<7;i++){
     const d=new Date(mon);d.setDate(mon.getDate()+i);
-    const v=days[iso(d)];if(v)c++;
+    const v=days[iso(d)];
     h+='<div class="wd'+(v?' on':'')+(i===di?' today':'')+'">'+
        '<span class="wl">'+L[i]+'</span><span class="wc">'+(v||'·')+'</span></div>';
   }
