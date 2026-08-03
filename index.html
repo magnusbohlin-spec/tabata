@@ -24,25 +24,36 @@ html,body{margin:0;height:100%;background:var(--bg);overscroll-behavior:none}
 body{color:var(--ink);font-family:var(--f);font-size:15px;display:flex;flex-direction:column;
   padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   -webkit-user-select:none;user-select:none;font-variant-numeric:tabular-nums}
-button,input,select,textarea{font-family:inherit;color:inherit;background:none;border:none;font-size:inherit}
+button,input,select{font-family:inherit;color:inherit;background:none;border:none;font-size:inherit}
 button{cursor:pointer}
 .screen{flex:1;display:none;flex-direction:column;min-height:0}
 .screen.on{display:flex}
 .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:500}
 
-/* ── masthead ── */
-.mast{padding:26px 18px 18px;border-bottom:1px solid var(--line);flex:none}
+/* masthead */
+.mast{padding:26px 18px 16px;flex:none}
 .mast h1{font-size:30px;font-weight:700;letter-spacing:-.025em;margin:0;line-height:1}
 .mast .sport{margin-top:9px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;
   color:var(--amber);font-weight:600;display:flex;align-items:center;gap:9px}
 .mast .sport::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(240,166,60,.4),transparent)}
+
+/* veckologg */
+.week{display:flex;gap:5px;padding:0 18px 18px;border-bottom:1px solid var(--line);flex:none;align-items:flex-end}
+.wd{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.wl{font-size:9px;letter-spacing:.1em;color:var(--dimmer);text-transform:uppercase}
+.wc{width:100%;height:30px;border-radius:5px;border:1px solid var(--line);display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:600;color:transparent}
+.wd.on .wc{background:rgba(240,166,60,.16);border-color:rgba(240,166,60,.5);color:var(--amber)}
+.wd.today .wc{border-color:var(--line2)}
+.wd.today.on .wc{border-color:var(--amber)}
+.wsum{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer);
+  padding:0 18px;margin:-8px 0 0;flex:none}
 
 #home{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .pad{padding:20px 18px 40px}
 .sec{margin-bottom:26px}
 .sec>.lbl{display:block;margin-bottom:11px}
 
-/* kod */
 .code{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;background:var(--card)}
 .code input{flex:1;padding:13px 14px;font-size:13px;outline:none;min-width:0}
 .code input::placeholder{color:var(--dimmer)}
@@ -61,7 +72,6 @@ button{cursor:pointer}
 .pill.on{color:var(--amber);border-color:var(--amber)}
 .pill:active{background:var(--card)}
 
-/* passkort */
 .pass{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:9px;overflow:hidden}
 .pass.open{border-color:var(--line2)}
 .pass.next{border-color:rgba(240,166,60,.4)}
@@ -107,14 +117,15 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
   background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
   background-position:calc(100% - 19px) 19px,calc(100% - 14px) 19px;background-size:5px 5px;background-repeat:no-repeat}
 .seg{display:inline-flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
-.seg button{padding:9px 15px;font-size:13px;color:var(--dim)}
+.seg button{padding:9px 14px;font-size:12.5px;color:var(--dim)}
 .seg button.on{background:var(--ink);color:var(--bg);font-weight:600}
-.rowflex{display:flex;align-items:center;gap:13px;margin-top:4px;flex-wrap:wrap}
+.rowflex{display:flex;align-items:center;gap:13px;margin-top:14px;flex-wrap:wrap}
+.note{font-size:11.5px;color:var(--dimmer);line-height:1.55;margin-top:9px}
 .keys{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;font-size:11.5px;color:var(--dim)}
 .keys div{padding:4px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}
 .keys b{color:var(--amber);font-weight:600;width:26px;flex:none}
 
-/* ── kör ── */
+/* kör */
 #run{position:relative}
 .prog{height:2px;background:rgba(255,255,255,.07);flex:none}
 .prog span{display:block;height:100%;width:0;background:var(--amber)}
@@ -158,12 +169,12 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 </head>
 <body>
 
-<!-- ═══ HEM ═══ -->
 <section id="home" class="screen on">
   <div class="mast">
-    <h1>Magnus & Kroppen</h1>
+    <h1>Intervall</h1>
     <div class="sport"><span>Surf · Klättring · MTB</span></div>
   </div>
+  <div class="week" id="week"></div>
   <div class="pad">
 
     <div class="sec">
@@ -177,7 +188,7 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
     </div>
 
     <div class="sec">
-      <span class="lbl">Idag</span>
+      <span class="lbl">Var och hur</span>
       <div class="pills" id="pills"></div>
     </div>
 
@@ -187,7 +198,7 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
     </div>
 
     <div class="disc" id="d1">
-      <button><span class="lbl">Justera intervall</span><span>▾</span></button>
+      <button><span class="lbl">Justera</span><span>▾</span></button>
       <div class="body">
         <div class="dial"><div class="dial-t"><span class="lbl">Arbete</span><span class="dial-v" id="wV">30 s</span></div>
           <input type="range" id="wR" min="15" max="60" step="5" value="30"></div>
@@ -202,14 +213,13 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
           <option value="1500">Max 25 min</option><option value="1800">Max 30 min</option>
           <option value="2400">Max 40 min</option>
         </select>
-        <div class="rowflex" style="margin-top:16px">
-          <span class="lbl">Omgångar</span>
-          <div class="seg" id="rSeg"><button data-r="1">1</button><button data-r="2" class="on">2</button><button data-r="3">3</button></div>
-        </div>
-        <div class="rowflex" style="margin-top:14px">
-          <span class="lbl">Röst</span>
-          <div class="seg" id="vSeg"><button data-v="en" class="on">EN</button><button data-v="sv">SV</button><button data-v="off">Av</button></div>
-        </div>
+        <div class="rowflex"><span class="lbl">Omgångar</span>
+          <div class="seg" id="rSeg"><button data-r="1">1</button><button data-r="2" class="on">2</button><button data-r="3">3</button></div></div>
+        <div class="rowflex"><span class="lbl">Röst</span>
+          <div class="seg" id="vSeg"><button data-v="en" class="on">EN</button><button data-v="sv">SV</button><button data-v="off">Av</button></div></div>
+        <div class="rowflex"><span class="lbl">Ljud</span>
+          <div class="seg" id="aSeg"><button data-a="music" class="on">Med musik</button><button data-a="solo">Ensamt</button></div></div>
+        <div class="note" id="aNote"></div>
       </div>
     </div>
 
@@ -221,7 +231,6 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
   </div>
 </section>
 
-<!-- ═══ KÖR ═══ -->
 <section id="run" class="screen">
   <div class="prog"><span id="fill"></span></div>
   <div class="rtop"><span class="lbl" id="rPass"></span><span class="lbl" id="rRound"></span></div>
@@ -238,7 +247,6 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
   <div class="cue" id="cue">Byt sida</div>
 </section>
 
-<!-- ═══ KLAR ═══ -->
 <section id="done" class="screen">
   <h2>Klart</h2>
   <div class="m" id="dMeta"></div>
@@ -249,17 +257,22 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 
 <script>
 /* ════ BIBLIOTEK ════
-   c = kod · sp = engelskt uttal för rösten · tags: bar/weight/jump
-   side: 'alt' full tid per sida (växlar per omgång) | 'split' 15/15 i intervallet   */
+   c=kod · sp=engelskt uttal · tags: bar/weight/jump
+   park = variant på utegym (stänger finns, vikter inte) · gym = laddad variant
+   side: 'alt' full tid per sida | 'split' 15/15                                  */
 const LIB={
  'Pull-ups':{c:'PU',tags:['bar'],alt:['Inverted row','Superman pull'],gym:'Lat pulldown'},
  'Inverted row':{c:'IR',tags:['bar'],alt:['Superman pull','Prone Y-T-W'],gym:'Hantelrodd'},
- 'Superman pull':{c:'SM',tags:[],alt:['Prone Y-T-W'],gym:'Face pull'},
+ 'Superman pull':{c:'SM',tags:[],alt:['Prone Y-T-W'],gym:'Face pull',park:'Inverted row'},
  'Prone Y-T-W':{c:'YW',sp:'Y T W raise',tags:[],alt:['Superman pull']},
- 'Renegade row':{c:'RR',tags:['weight'],alt:['Plank shoulder taps','Superman pull']},
+ 'Renegade row':{c:'RR',tags:['weight'],alt:['Plank shoulder taps','Superman pull'],park:'Inverted row'},
  'Plank shoulder taps':{c:'ST',tags:[],alt:['Hollow rocks','Plank']},
  'Hanging knee tuck':{c:'HK',tags:['bar'],side:'split',alt:['Cross-body mountain climbers','Russian twist']},
- 'Enbensknäböj':{c:'EK',sp:'Single leg squat',tags:['weight'],side:'alt',alt:['Split squat','Reverse lunge'],gym:'Bulgarian split squat'},
+ 'Dips':{c:'DI',tags:['bar'],alt:['Diamond push-up','Push-up']},
+ 'Hanging leg raise':{c:'HL',tags:['bar'],alt:['Hollow rocks','Dead bugs']},
+ 'Enbensknäböj':{c:'EK',sp:'Single leg squat',tags:['weight'],side:'alt',alt:['Split squat','Reverse lunge'],
+   gym:'Bulgarian split squat',park:'Bulgarian split squat'},
+ 'Bulgarian split squat':{c:'BS',tags:[],side:'alt',alt:['Split squat','Reverse lunge']},
  'Split squat':{c:'SQ',tags:[],side:'alt',alt:['Reverse lunge'],gym:'Bulgarian split squat'},
  'Reverse lunge':{c:'RL',tags:[],side:'alt',alt:['Split squat','Glute bridge'],gym:'Walking lunge m. hantlar'},
  'Lateral lunge':{c:'LL',tags:[],side:'alt',alt:['Cossack squat','Split squat']},
@@ -273,11 +286,11 @@ const LIB={
  'Plyometric push-up':{c:'PP',tags:['jump'],alt:['Tempo push-up','Diamond push-up']},
  'Explosiv push-up':{c:'EP',sp:'Explosive push-up',tags:['jump'],alt:['Tempo push-up','Push-up']},
  'Diamond push-up':{c:'DP',tags:[],alt:['Push-up']},
- 'Pike push-up':{c:'PK',tags:[],alt:['Push-up'],gym:'Axelpress hantel'},
+ 'Pike push-up':{c:'PK',tags:[],alt:['Push-up'],gym:'Axelpress hantel',park:'Dips'},
  'Tempo push-up':{c:'TP',tags:[],alt:['Push-up']},
  'Push-up':{c:'PS',tags:[],alt:['Knä-push-up'],gym:'Bänkpress hantel'},
  'Knä-push-up':{c:'KP',sp:'Knee push-up',tags:[],alt:['Plank']},
- 'Hollow rocks':{c:'HR',tags:[],alt:['Dead bugs']},
+ 'Hollow rocks':{c:'HR',tags:[],alt:['Dead bugs'],park:'Hanging leg raise'},
  'Dead bugs':{c:'DB',tags:[],alt:['Hollow rocks']},
  'Russian twist':{c:'RT',tags:[],alt:['Dead bugs']},
  'Plank':{c:'PL',tags:[],alt:['Dead bugs']},
@@ -291,14 +304,13 @@ const LIB={
  'Lat pulldown':{sp:'Lat pulldown',tags:[],alt:[]},
  'Hantelrodd':{sp:'Dumbbell row',tags:[],alt:[]},
  'Face pull':{sp:'Face pull',tags:[],alt:[]},
- 'Bulgarian split squat':{sp:'Bulgarian split squat',tags:[],side:'alt',alt:[]},
- 'Walking lunge m. hantlar':{sp:'Walking lunge',tags:[],alt:[]},
+ 'Walking lunge m. hantlar':{sp:'Walking lunge',tags:[],side:'alt',alt:[]},
  'Goblet squat':{sp:'Goblet squat',tags:[],alt:[]},
  'Hip thrust m. skivstång':{sp:'Barbell hip thrust',tags:[],alt:[]},
  'Axelpress hantel':{sp:'Dumbbell shoulder press',tags:[],alt:[]},
  'Bänkpress hantel':{sp:'Dumbbell bench press',tags:[],alt:[]}
 };
-const BYCODE={}; Object.entries(LIB).forEach(([n,e])=>{if(e.c)BYCODE[e.c]=n});
+const BYCODE={};Object.entries(LIB).forEach(([n,e])=>{if(e.c)BYCODE[e.c]=n});
 
 const BASE=[
  {key:'A',name:'Klätter & drag',focus:'Överkropp · grepp',
@@ -312,66 +324,74 @@ const BASE=[
       'Lateral lunge','Side plank w/ dips','Pull-ups','Russian twist','Reverse lunge']}
 ];
 const FILTERS=[
+ {id:'park',label:'Utegym',block:['weight'],solo:'gym'},
+ {id:'gym',label:'Fullt gym',block:[],solo:'park'},
  {id:'nobar',label:'Ingen stång',block:['bar']},
  {id:'noweight',label:'Inga vikter',block:['weight']},
- {id:'quiet',label:'Tyst, inga hopp',block:['jump']},
- {id:'gym',label:'Fullt gym',block:[]}
+ {id:'quiet',label:'Tyst, inga hopp',block:['jump']}
 ];
 
-let st={rounds:2,work:30,rest:15,roundRest:60,budget:0,voice:'en',
+let st={rounds:2,work:30,rest:15,roundRest:60,budget:0,voice:'en',audio:'music',
         filters:new Set(),cut:{A:new Set(),B:new Set(),C:new Set(),X:new Set()},open:null};
-let loaded=null,lastLog=null,history=[],lastDone=null;
+let loaded=null,lastLog=null,history=[],lastDone=null,days={};
 const $=id=>document.getElementById(id);
 const mmss=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const p2=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
 const spoken=n=>(LIB[n]&&LIB[n].sp)?LIB[n].sp:n;
 const sideOf=(p,n)=>(p&&p.sides&&p.sides[n]!==undefined)?p.sides[n]:(LIB[n]?LIB[n].side||null:null);
 
-/* ════ LAGRING — window.storage i Claude, localStorage på egen host ════ */
+/* ════ LAGRING ════ */
 const KEY='intervall:v1';
 const Store={
-  async get(){ try{
-      if(window.storage){const r=await window.storage.get(KEY);return r?JSON.parse(r.value):null}
-      const v=localStorage.getItem(KEY);return v?JSON.parse(v):null;
-    }catch(e){return null} },
-  async set(o){ try{
-      const s=JSON.stringify(o);
-      if(window.storage) await window.storage.set(KEY,s); else localStorage.setItem(KEY,s);
-    }catch(e){} }
+  async get(){try{
+    if(window.storage){const r=await window.storage.get(KEY);return r?JSON.parse(r.value):null}
+    const v=localStorage.getItem(KEY);return v?JSON.parse(v):null}catch(e){return null}},
+  async set(o){try{const s=JSON.stringify(o);
+    if(window.storage)await window.storage.set(KEY,s);else localStorage.setItem(KEY,s)}catch(e){}}
 };
-async function loadState(){
-  const d=await Store.get(); if(!d) return;
-  history=Array.isArray(d.history)?d.history.slice(0,5):[];
-  lastDone=d.lastDone||null; render();
+function saveState(){
+  const cut=Date.now()-70*864e5, keep={};
+  Object.entries(days).forEach(([k,v])=>{if(new Date(k).getTime()>cut)keep[k]=v});
+  days=keep;
+  Store.set({history,lastDone,days,voice:st.voice,audio:st.audio});
 }
-const saveState=()=>Store.set({history,lastDone});
-function remember(code,name){
-  history=[{code,name},...history.filter(h=>h.code!==code)].slice(0,5);
-  saveState();
+async function loadState(){
+  const d=await Store.get(); if(!d)return;
+  history=Array.isArray(d.history)?d.history.slice(0,5):[];
+  lastDone=d.lastDone||null; days=d.days||{};
+  if(d.voice){st.voice=d.voice;$('vSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===st.voice))}
+  if(d.audio){st.audio=d.audio;$('aSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.a===st.audio))}
+  audioNote(); render();
 }
 
 /* ════ ERSÄTTNING ════ */
 function blocked(){const b=new Set();FILTERS.forEach(f=>st.filters.has(f.id)&&f.block.forEach(t=>b.add(t)));return b}
 const ok=(n,bad)=>!((LIB[n]&&LIB[n].tags)||[]).some(t=>bad.has(t));
-function resolveOne(name,bad,cut,used){
-  const chain=[name,...((LIB[name]&&LIB[name].alt)||[])];
+function preMap(n){
+  if(st.filters.has('gym')&&LIB[n]&&LIB[n].gym)return LIB[n].gym;
+  if(st.filters.has('park')&&LIB[n]&&LIB[n].park)return LIB[n].park;
+  return n;
+}
+function resolveOne(start,orig,bad,cut,used){
+  const chain=[start,...((LIB[start]&&LIB[start].alt)||[])];
   for(const c of chain){
-    if(c===name&&(cut.has(name)||!ok(c,bad))) continue;
-    if(c!==name&&(!ok(c,bad)||used.has(c))) continue;
-    return {n:c,orig:name,sw:c!==name};
+    if(cut.has(orig)&&c===start)continue;
+    if(!ok(c,bad)||used.has(c))continue;
+    return {n:c,orig,sw:c!==orig};
   }
-  for(const c of chain) if(ok(c,bad)&&!(c===name&&cut.has(name))) return {n:c,orig:name,sw:c!==name};
+  for(const c of chain) if(ok(c,bad)&&!(cut.has(orig)&&c===start)) return {n:c,orig,sw:c!==orig};
   return null;
 }
 function resolve(p){
   const bad=blocked(),cut=st.cut[p.key]||new Set(),used=new Set();
-  let rows=p.ex.map(n=>{const r=resolveOne(n,bad,cut,used);if(r)used.add(r.n);return r}).filter(Boolean);
-  if(st.filters.has('gym')) rows=rows.map(r=>{const g=LIB[r.n]&&LIB[r.n].gym;return g?{...r,n:g,sw:true}:r});
+  let rows=p.ex.map(n=>{const r=resolveOne(preMap(n),n,bad,cut,used);if(r)used.add(r.n);return r}).filter(Boolean);
   let rounds=p.rounds||st.rounds,note='';
   if(st.budget){
     const dur=(n,R)=>10+R*n*(st.work+st.rest)-st.rest+(R-1)*(st.roundRest-st.rest);
     outer: for(let R=rounds;R>=1;R--) for(let n=rows.length;n>=4;n--) if(dur(n,R)<=st.budget){
       if(n<rows.length){const k=[];for(let i=0;i<n;i++)k.push(rows[Math.round(i*(rows.length-1)/(n-1))]);rows=[...new Set(k)]}
-      if(R<rounds||rows.length<p.ex.length) note='Nedskalat till '+R+' omgångar och '+rows.length+' stationer.';
+      if(R<rounds||rows.length<p.ex.length)note='Nedskalat till '+R+' omgångar och '+rows.length+' stationer.';
       rounds=R;break outer;
     }
   }
@@ -383,34 +403,30 @@ const secondsOf=(ex,R)=>10+R*ex.length*(st.work+st.rest)-st.rest+(R-1)*(st.round
 /* ════ KOD ════ */
 function parseCode(raw){
   const t=raw.trim().split(/\s+/).filter(Boolean);
-  if(!t.length||!/^iv1$/i.test(t[0])) throw new Error('Koden måste börja med IV1.');
+  if(!t.length||!/^iv1$/i.test(t[0]))throw new Error('Koden måste börja med IV1.');
   let R=st.rounds,w=st.work,r=st.rest,rr=st.roundRest,name='Dagens pass',ex=[],sides={};
   for(let i=1;i<t.length;i++){
     let tok=t[i];
     if(tok[0]==='@'){name=tok.slice(1).replace(/_/g,' ');continue}
     const m=tok.match(/^(\d+)x(\d+)\/(\d+)(?:\/(\d+))?$/i);
     if(m){R=+m[1];w=+m[2];r=+m[3];if(m[4]!==undefined)rr=+m[4];continue}
-    let side=null;
-    const s=tok.match(/^(.+):([as])$/i);
+    let side=null;const s=tok.match(/^(.+):([as])$/i);
     if(s){tok=s[1];side=s[2].toLowerCase()==='a'?'alt':'split'}
-    const up=tok.toUpperCase();
-    let n;
-    if(BYCODE[up]) n=BYCODE[up];
-    else{ n=tok.replace(/_/g,' '); if(!LIB[n]) LIB[n]={tags:[],alt:[],side:side}; }
-    if(side!==null) sides[n]=side;
+    const up=tok.toUpperCase();let n;
+    if(BYCODE[up])n=BYCODE[up];
+    else{n=tok.replace(/_/g,' ');if(!LIB[n])LIB[n]={tags:[],alt:[],side:side}}
+    if(side!==null)sides[n]=side;
     ex.push(n);
   }
-  if(!ex.length) throw new Error('Koden innehåller inga övningar.');
+  if(!ex.length)throw new Error('Koden innehåller inga övningar.');
   return {key:'X',name,focus:'Från kod',ex,sides,rounds:R,_w:w,_r:r,_rr:rr};
 }
 function makeCode(p){
   const R=resolve(p);
-  const head='IV1 '+R.rounds+'x'+st.work+'/'+st.rest+'/'+st.roundRest+
-    ' @'+(p.key==='X'?p.name:'Pass_'+p.key).replace(/\s+/g,'_');
-  return head+' '+R.ex.map(e=>{
-    const l=LIB[e.n];
-    return (l&&l.c)?l.c:e.n.replace(/\s+/g,'_')+(e.side==='alt'?':a':e.side==='split'?':s':'');
-  }).join(' ');
+  return 'IV1 '+R.rounds+'x'+st.work+'/'+st.rest+'/'+st.roundRest+
+    ' @'+(p.key==='X'?p.name:'Pass_'+p.key).replace(/\s+/g,'_')+' '+
+    R.ex.map(e=>{const l=LIB[e.n];
+      return (l&&l.c)?l.c:e.n.replace(/\s+/g,'_')+(e.side==='alt'?':a':e.side==='split'?':s':'')}).join(' ');
 }
 function applyPass(p,code){
   st.rounds=p.rounds;st.work=p._w;st.rest=p._r;st.roundRest=p._rr;
@@ -419,15 +435,15 @@ function applyPass(p,code){
   $('rrR').value=st.roundRest;$('rrV').textContent=st.roundRest+' s';
   $('rSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.r===st.rounds));
   loaded=p;st.cut.X=new Set();st.open='X';
-  if(code) remember(code.trim(),p.name);
+  if(code){history=[{code:code.trim(),name:p.name},...history.filter(h=>h.code!==code.trim())].slice(0,5);saveState()}
   render();
 }
 function loadCode(raw){
   const src=(raw!==undefined?raw:$('codeIn').value),m=$('codeMsg');
   if(!src||!src.trim())return;
-  try{ const p=parseCode(src); applyPass(p,src);
-    m.className='msg';m.textContent=p.name+' inläst — '+p.ex.length+' stationer.';$('codeIn').value='';
-  }catch(e){ m.className='msg err';m.textContent=e.message }
+  try{const p=parseCode(src);applyPass(p,src);
+    m.className='msg';m.textContent=p.name+' inläst — '+p.ex.length+' stationer.';$('codeIn').value=''}
+  catch(e){m.className='msg err';m.textContent=e.message}
 }
 async function copyCode(p){
   const c=makeCode(p);
@@ -439,33 +455,37 @@ function flash(t){const m=$('codeMsg');m.className='msg';m.textContent=t;
 
 /* ════ LJUD ════ */
 let ac=null;
-function unlock(){if(ac){ac.state==='suspended'&&ac.resume();return}
+function audioSession(){
+  try{if('audioSession' in navigator) navigator.audioSession.type = st.audio==='music'?'transient':'playback'}catch(e){}
+}
+function audioNote(){
+  $('aNote').textContent = st.audio==='music'
+    ? 'Musik från Apple Music fortsätter spela och sänks kort under pip och röst. Kräver att ringläget är på — ljudlöst läge tystar appen.'
+    : 'Appen tar över ljudet helt och hörs även med telefonen på ljudlöst. Pausar musik som spelas i andra appar.';
+}
+function unlock(){
+  audioSession();
+  if(ac){ac.state==='suspended'&&ac.resume();return}
   ac=new(window.AudioContext||window.webkitAudioContext)();
-  const b=ac.createBuffer(1,1,22050),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0)}
+  const b=ac.createBuffer(1,1,22050),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0);
+}
 function tone(f,d,g){if(!ac)return;const o=ac.createOscillator(),n=ac.createGain(),t=ac.currentTime;
   o.type='sine';o.frequency.value=f;n.gain.setValueAtTime(0,t);n.gain.linearRampToValueAtTime(g||.3,t+.008);
   n.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(n);n.connect(ac.destination);o.start(t);o.stop(t+d+.02)}
-const SND={tick:()=>tone(760,.08,.22),go:()=>tone(1180,.28,.34),
-  rest:()=>{tone(520,.16,.26);setTimeout(()=>tone(400,.2,.24),150)},
-  round:()=>tone(300,.5,.3),swap:()=>{tone(1000,.07,.3);setTimeout(()=>tone(1000,.07,.3),110)},
-  end:()=>[0,180,360].forEach((d,i)=>setTimeout(()=>tone(660+i*220,.3,.3),d))};
-const PHR={
-  ready:{en:'Get ready',sv:'Gör dig redo'}, round:{en:'Round',sv:'Omgång'},
-  done:{en:'done',sv:'klar'}, finish:{en:'Workout complete. Nice work.',sv:'Passet är klart.'}
-};
-function say(txt,isName){
+const SND={tick:()=>tone(760,.08,.24),go:()=>tone(1180,.28,.36),
+  rest:()=>{tone(520,.16,.28);setTimeout(()=>tone(400,.2,.26),150)},
+  round:()=>tone(300,.5,.32),swap:()=>{tone(1000,.07,.32);setTimeout(()=>tone(1000,.07,.32),110)},
+  end:()=>[0,180,360].forEach((d,i)=>setTimeout(()=>tone(660+i*220,.3,.32),d))};
+const PHR={ready:{en:'Get ready',sv:'Gör dig redo'},round:{en:'Round',sv:'Omgång'},
+  done:{en:'done',sv:'klar'},finish:{en:'Workout complete. Nice work.',sv:'Passet är klart.'}};
+function say(txt){
   if(st.voice==='off'||!window.speechSynthesis)return;
-  try{
-    const en=st.voice==='en';
-    const u=new SpeechSynthesisUtterance(txt);
-    u.lang=en?'en-GB':'sv-SE'; u.rate=1.02;
+  try{const en=st.voice==='en',u=new SpeechSynthesisUtterance(txt);
+    u.lang=en?'en-GB':'sv-SE';u.rate=1.02;
     const v=speechSynthesis.getVoices().find(x=>x.lang&&x.lang.toLowerCase().startsWith(en?'en':'sv'));
-    if(v)u.voice=v;
-    speechSynthesis.cancel();speechSynthesis.speak(u);
-  }catch(e){}
+    if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
 }
 const nameFor=n=>st.voice==='en'?spoken(n):n;
-if(window.speechSynthesis) speechSynthesis.onvoiceschanged=()=>{};
 
 /* ════ WAKE LOCK ════ */
 let wl=null;
@@ -478,13 +498,12 @@ let seq=[],marks=[],total=0,t0=0,pacc=0,pat=null,running=false,paused=false,cur=
     lastStep=-1,lastW=-1,swapDone=false,tStart=null;
 function build(ex,R){
   const s=[{type:'prep',dur:10}];
-  for(let r=1;r<=R;r++) ex.forEach((e,i)=>{
+  for(let r=1;r<=R;r++)ex.forEach((e,i)=>{
     s.push({type:'work',dur:st.work,name:e.n,side:e.side,round:r,idx:i,
-            next:i<ex.length-1?ex[i+1].n:(r<R?ex[0].n:null),
-            nextIsRound:i===ex.length-1&&r<R});
+      next:i<ex.length-1?ex[i+1].n:(r<R?ex[0].n:null),nextIsRound:i===ex.length-1&&r<R});
     const last=i===ex.length-1;
-    if(last&&r<R){ if(st.roundRest>0) s.push({type:'roundrest',dur:st.roundRest,round:r,next:ex[0].n}); }
-    else if(!last) s.push({type:'rest',dur:st.rest,round:r,next:ex[i+1].n});
+    if(last&&r<R){if(st.roundRest>0)s.push({type:'roundrest',dur:st.roundRest,round:r,next:ex[0].n})}
+    else if(!last)s.push({type:'rest',dur:st.rest,round:r,next:ex[i+1].n});
   });
   return s;
 }
@@ -512,33 +531,31 @@ function frame(){
   $('fill').style.width=(((e-from)/s.dur)*100).toFixed(2)+'%';
   if(!paused)raf=requestAnimationFrame(frame);
 }
-function upnext(k,v){$('upK').textContent=k;$('upV').textContent=v||''}
+const upnext=(k,v)=>{$('upK').textContent=k;$('upV').textContent=v||''};
 function enter(s){
   $('run').className='screen on '+s.type;
   if(s.type==='prep'){
     $('ph').textContent='Förbered';$('exN').textContent=cur.ex[0].n;$('sd').textContent='';
-    upnext('Först ut','');$('nxi').textContent='';
-    $('rRound').textContent='Omgång 1/'+cur.rounds;
+    upnext('Först ut','');$('nxi').textContent='';$('rRound').textContent='Omgång 1/'+cur.rounds;
     say(PHR.ready[st.voice==='en'?'en':'sv']+'. '+nameFor(cur.ex[0].n));
   }
   if(s.type==='work'){
     $('ph').textContent='Arbete';$('exN').textContent=s.name;
     $('rRound').textContent='Omgång '+s.round+'/'+cur.rounds;
     $('sd').textContent=s.side==='alt'?(s.round%2?'Vänster sida':'Höger sida'):s.side==='split'?'Byte efter halva':'';
-    upnext(s.next?(s.nextIsRound?'Efter omgångsvilan':'Nästa'):'Sista stationen', s.next||'');
+    upnext(s.next?(s.nextIsRound?'Efter omgångsvilan':'Nästa'):'Sista stationen',s.next||'');
     $('nxi').textContent='Station '+(s.idx+1)+' av '+cur.ex.length;
     mark(s.round,s.idx);SND.go();
   }
   if(s.type==='rest'){
     $('ph').textContent='Vila';$('exN').textContent=s.next;$('sd').textContent='';
     upnext('Kommande','');$('nxi').textContent='';
-    SND.rest();setTimeout(()=>say(nameFor(s.next),true),420);
+    SND.rest();setTimeout(()=>say(nameFor(s.next)),420);
   }
   if(s.type==='roundrest'){
     $('ph').textContent='Omgång klar';$('exN').textContent='Vila';$('sd').textContent='';
     upnext('Startar omgång '+(s.round+1)+' med',s.next);$('nxi').textContent='';
-    SND.round();
-    const en=st.voice==='en';
+    SND.round();const en=st.voice==='en';
     setTimeout(()=>say(PHR.round[en?'en':'sv']+' '+s.round+' '+PHR.done[en?'en':'sv']),500);
   }
 }
@@ -558,14 +575,15 @@ function finish(){
   running=false;cancelAnimationFrame(raf);awake(false);SND.end();
   say(PHR.finish[st.voice==='en'?'en':'sv']);
   lastLog={p:cur,start:tStart,end:new Date()};
-  if(cur.key!=='X'){lastDone=cur.key;saveState()}
+  days[iso(new Date())]=cur.key==='X'?'★':cur.key;
+  if(cur.key!=='X')lastDone=cur.key;
+  saveState();render();
   $('dMeta').innerHTML=(cur.key==='X'?cur.name:'Pass '+cur.key+' — '+cur.name)+'<br>'+
     cur.ex.length+' stationer · '+cur.rounds+' omgångar · '+st.work+'/'+st.rest+'<br>'+mmss(total);
   $('dHint').textContent='';show('done');
 }
 
 /* ════ KALENDER ════ */
-const p2=n=>String(n).padStart(2,'0');
 const z=d=>d.getUTCFullYear()+p2(d.getUTCMonth()+1)+p2(d.getUTCDate())+'T'+p2(d.getUTCHours())+p2(d.getUTCMinutes())+p2(d.getUTCSeconds())+'Z';
 function toCal(){
   if(!lastLog)return;const p=lastLog.p;
@@ -576,7 +594,7 @@ function toCal(){
    'DESCRIPTION:'+p.ex.map((e,i)=>(i+1)+'. '+e.n).join('\\n')+'\\n\\n'+p.rounds+' omgångar · '+st.work+'/'+st.rest,
    'CATEGORIES:Träning','END:VEVENT','END:VCALENDAR'].join('\r\n');
   const url=URL.createObjectURL(new Blob([body],{type:'text/calendar;charset=utf-8'}));
-  const a=document.createElement('a');a.href=url;a.download='intervall-'+new Date().toISOString().slice(0,10)+'.ics';
+  const a=document.createElement('a');a.href=url;a.download='intervall-'+iso(new Date())+'.ics';
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
   $('dHint').textContent='Öppna filen så frågar iPhone vilken kalender passet ska in i.';
 }
@@ -592,11 +610,24 @@ function sparkline(n,R){
     '<path d="'+d+' L100,22" fill="none" stroke="var(--amber)" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".85"/>'+
     '<line x1="0" y1="22.5" x2="100" y2="22.5" stroke="var(--line2)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>';
 }
+function renderWeek(){
+  const now=new Date(),di=(now.getDay()+6)%7,mon=new Date(now);
+  mon.setDate(now.getDate()-di);mon.setHours(0,0,0,0);
+  const L=['M','T','O','T','F','L','S'];let h='',c=0;
+  for(let i=0;i<7;i++){
+    const d=new Date(mon);d.setDate(mon.getDate()+i);
+    const v=days[iso(d)];if(v)c++;
+    h+='<div class="wd'+(v?' on':'')+(i===di?' today':'')+'">'+
+       '<span class="wl">'+L[i]+'</span><span class="wc">'+(v||'·')+'</span></div>';
+  }
+  $('week').innerHTML=h;
+}
 const nextKey=()=>{const o=['A','B','C'];return lastDone?o[(o.indexOf(lastDone)+1)%3]:'A'};
 function render(){
+  renderWeek();
   $('pills').innerHTML=FILTERS.map(f=>'<button class="pill'+(st.filters.has(f.id)?' on':'')+'" data-f="'+f.id+'">'+f.label+'</button>').join('');
   $('hist').innerHTML=history.map((h,i)=>'<span class="hchip" data-h="'+i+'"><b>'+h.name+'</b><i data-del="'+i+'">✕</i></span>').join('');
-  const nk=nextKey(), items=loaded?[loaded,...BASE]:BASE, box=$('list'); box.innerHTML='';
+  const nk=nextKey(),items=loaded?[loaded,...BASE]:BASE,box=$('list');box.innerHTML='';
   items.forEach(p=>{
     const R=resolve(p),open=st.open===p.key,secs=secondsOf(R.ex,R.rounds),isNext=!loaded&&p.key===nk;
     const rows=R.rows.map((r,i)=>{
@@ -622,12 +653,16 @@ $('keys').innerHTML=Object.entries(LIB).filter(([,e])=>e.c).map(([n,e])=>'<div><
 
 /* ════ EVENTS ════ */
 const byKey=k=>k==='X'?loaded:BASE.find(p=>p.key===k);
-$('pills').onclick=e=>{const f=e.target.dataset.f;if(!f)return;
-  st.filters.has(f)?st.filters.delete(f):st.filters.add(f);render()};
+$('pills').onclick=e=>{
+  const f=e.target.dataset.f;if(!f)return;
+  if(st.filters.has(f))st.filters.delete(f);
+  else{st.filters.add(f);const d=FILTERS.find(x=>x.id===f);if(d&&d.solo)st.filters.delete(d.solo)}
+  render();
+};
 $('hist').onclick=e=>{
   const del=e.target.dataset.del;
   if(del!==undefined){history.splice(+del,1);saveState();render();return}
-  const h=e.target.closest('[data-h]'); if(h) loadCode(history[+h.dataset.h].code);
+  const h=e.target.closest('[data-h]');if(h)loadCode(history[+h.dataset.h].code);
 };
 $('list').onclick=e=>{
   const g=e.target.closest('[data-g]'),c=e.target.closest('[data-c]'),
@@ -647,14 +682,17 @@ $('rSeg').onclick=e=>{if(e.target.tagName!=='BUTTON')return;st.rounds=+e.target.
   $('rSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===e.target));render()};
 $('vSeg').onclick=e=>{if(e.target.tagName!=='BUTTON')return;st.voice=e.target.dataset.v;
   $('vSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===e.target));
-  if(st.voice!=='off')say(st.voice==='en'?'Voice on':'Rösten är på')};
+  saveState();if(st.voice!=='off')say(st.voice==='en'?'Voice on':'Rösten är på')};
+$('aSeg').onclick=e=>{if(e.target.tagName!=='BUTTON')return;st.audio=e.target.dataset.a;
+  $('aSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===e.target));
+  audioSession();audioNote();saveState();unlock();SND.go()};
 $('codeGo').onclick=()=>loadCode();
 $('codeIn').addEventListener('keydown',e=>{if(e.key==='Enter')loadCode()});
 $('bPause').onclick=togglePause;$('bSkip').onclick=skip;$('bStop').onclick=stop;
 $('bHome').onclick=()=>show('home');$('bCal').onclick=toCal;
 document.addEventListener('touchstart',unlock,{once:true});
 document.addEventListener('click',unlock,{once:true});
-render();loadState();
+audioNote();render();loadState();
 </script>
 </body>
 </html>
