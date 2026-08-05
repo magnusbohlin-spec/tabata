@@ -10,7 +10,7 @@
 <title>Jag &amp; Kroppen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#050C22; --card:#0B1636; --card2:#141F45;
@@ -36,16 +36,7 @@ button{cursor:pointer}
   color:var(--pump);font-weight:600;display:flex;align-items:center;gap:9px}
 .mast .sport::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(254,138,36,.45),transparent)}
 
-.aff{border-top:1px solid var(--line);border-bottom:1px solid var(--line);flex:none}
-.aff>button{width:100%;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
-.aff>button span:last-child{color:var(--dimmer);font-size:11px}
-.aff .body{display:none;padding:0 18px 22px}
-.aff.open .body{display:block}
-.aff p{font-size:15px;line-height:1.66;color:var(--ink);margin:0 0 15px;display:flex;gap:13px}
-.aff p:last-child{margin-bottom:0}
-.aff p b{color:var(--dim);font-weight:500;font-size:11.5px;flex:none;padding-top:5px;width:11px}
-
-.week{display:flex;gap:5px;padding:16px 18px 18px;border-bottom:1px solid var(--line);flex:none;align-items:flex-end}
+.week{display:flex;gap:5px;padding:0 18px 18px;border-bottom:1px solid var(--line);flex:none;align-items:flex-end}
 .wd{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
 .wl{font-size:9px;letter-spacing:.1em;color:var(--dimmer);text-transform:uppercase}
 .wc{width:100%;height:30px;border-radius:5px;border:1px solid var(--line);display:flex;
@@ -107,13 +98,18 @@ button{cursor:pointer}
 .foot{display:flex;border-top:1px solid var(--line)}
 .foot button{flex:1;padding:15px 0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .foot button.go{color:var(--pump);font-weight:600;border-left:1px solid var(--line)}
+.foot button.solo{border-left:none}
 .foot button:active{background:var(--card2)}
+.medset{padding:15px 16px}
 
-.disc{border-top:1px solid var(--line)}
-.disc>button{width:100%;padding:15px 0;display:flex;justify-content:space-between;align-items:center}
-.disc>button span:last-child{color:var(--dim);font-size:11px}
-.disc .body{display:none;padding:2px 0 22px}
-.disc.open .body{display:block}
+.disc,.aff{border-top:1px solid var(--line)}
+.disc>button,.aff>button{width:100%;padding:15px 0;display:flex;justify-content:space-between;align-items:center}
+.disc>button span:last-child,.aff>button span:last-child{color:var(--dim);font-size:11px}
+.disc .body,.aff .body{display:none;padding:2px 0 22px}
+.disc.open .body,.aff.open .body{display:block}
+.aff p{font-size:15px;line-height:1.66;color:var(--ink);margin:0 0 15px;display:flex;gap:13px}
+.aff p:last-child{margin-bottom:0}
+.aff p b{color:var(--dim);font-weight:500;font-size:11.5px;flex:none;padding-top:5px;width:11px}
 .dial{margin-bottom:16px}
 .dial-t{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
 .dial-v{font-size:15px;font-weight:600}
@@ -132,6 +128,7 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 .keys div{padding:4px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}
 .keys b{color:var(--pump);font-weight:600;width:26px;flex:none}
 
+/* ══ KÖR ══ */
 #run{position:relative}
 #run.rest{--bg:#021D6B; --ink:#F2EEE9;
   --dim:rgba(242,238,233,.74); --dimmer:rgba(242,238,233,.5);
@@ -171,6 +168,21 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 .rfoot button:first-child{border-left:none;color:var(--ink);font-weight:600}
 .rfoot button:active{background:var(--card)}
 
+/* ══ MEDITATION ══ */
+#med{background:#000;color:#fff;align-items:center;justify-content:center;position:relative}
+.medwrap{position:relative;width:min(70vw,290px);height:min(70vw,290px);
+  display:flex;align-items:center;justify-content:center}
+.medwrap svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+/* ingen non-scaling-stroke här: den räknar streckmönstret i skärmpixlar
+   och gör att dasharray inte matchar cirkelns ritade omkrets */
+.medwrap circle{fill:none;stroke-width:.9}
+.mtrack{stroke:rgba(255,255,255,.13)}
+.mfill{stroke:rgba(255,255,255,.88);stroke-linecap:butt}
+.medNum{font-size:66px;font-weight:200;color:#fff;letter-spacing:-.04em;line-height:1}
+.medHint{position:absolute;bottom:14%;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.26);transition:opacity 1.6s ease;opacity:1}
+.medHint.gone{opacity:0}
+
 #done{align-items:center;justify-content:center;text-align:center;padding:32px}
 #done h2{font-size:34px;font-weight:600;letter-spacing:-.02em;margin:0 0 12px}
 #done .m{font-size:13px;color:var(--dim);line-height:1.8;margin:0 0 30px}
@@ -188,12 +200,6 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
     <h1 id="title">Jag &amp; Kroppen</h1>
     <div class="sport"><span>Surf · Klättring · MTB</span></div>
   </div>
-
-  <div class="aff" id="aff">
-    <button><span class="lbl">Affirmationer</span><span>▾</span></button>
-    <div class="body" id="affBody"></div>
-  </div>
-
   <div class="week" id="week"></div>
 
   <div class="pad">
@@ -210,6 +216,11 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
     <div class="sec">
       <span class="lbl">Tillägg</span>
       <div id="extras"></div>
+    </div>
+
+    <div class="aff" id="aff">
+      <button><span class="lbl">Affirmationer</span><span>▾</span></button>
+      <div class="body" id="affBody"></div>
     </div>
 
     <div class="disc" id="d0">
@@ -274,6 +285,17 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
   <div class="strip" id="strip"></div>
   <div class="rfoot"><button id="bPause">Paus</button><button id="bSkip">Hoppa</button><button id="bStop">Stopp</button></div>
   <div class="cue" id="cue">Byt sida</div>
+</section>
+
+<section id="med" class="screen">
+  <div class="medwrap">
+    <svg viewBox="0 0 200 200" aria-hidden="true">
+      <circle class="mtrack" cx="100" cy="100" r="88"></circle>
+      <circle class="mfill" id="medArc" cx="100" cy="100" r="88"></circle>
+    </svg>
+    <div class="medNum" id="medNum">5</div>
+  </div>
+  <div class="medHint" id="medHint">Tryck för att avsluta</div>
 </section>
 
 <section id="done" class="screen">
@@ -394,8 +416,7 @@ const BASE=[
  {key:'C',name:'Helkropp & rotation',focus:'Surf · kondition',
   ex:['Pop-up burpee','Renegade row','Cossack squat','Cross-body mountain climbers','Explosiv push-up',
       'Lateral lunge','Side plank w/ dips','Pull-ups','Russian twist','Reverse lunge']},
- /* noSub: strykning tar bort stationen helt istället för att ersätta den —
-    D och E är menyer att beskära, inte fasta pass                          */
+ /* noSub: strykning tar bort stationen helt — D och E är menyer att beskära */
  {key:'D',name:'Core för klättring',focus:'Mage · bål',extra:true,noSub:true,w:40,r:20,rr:0,rounds:1,
   ex:['Sit-ups','Side plank','Windshield wipers','Hollow hold','Sido-sit-up',
       'Hanging knee tuck','Reverse crunch','Copenhagen plank','Toe touch','Mountain climbers',
@@ -404,6 +425,7 @@ const BASE=[
   ex:['Cat–Cow','Down dog → cobra',"World's greatest stretch",'Djup squat med rotation',
       '90/90 höftrotation','Thoracic rotation','Wall slides','Framåtfällning rak rygg']}
 ];
+const MED_OPTS=[180,300,600,900,1200];
 const FILTERS=[
  {id:'park',label:'Utegym',block:['weight'],solo:'gym'},
  {id:'gym',label:'Fullt gym',block:[],solo:'park'},
@@ -412,7 +434,7 @@ const FILTERS=[
  {id:'quiet',label:'Tyst, inga hopp',block:['jump']}
 ];
 
-let st={rounds:2,work:30,rest:15,roundRest:60,budget:0,voice:'en',audio:'music',title:'Jag & Kroppen',
+let st={rounds:2,work:30,rest:15,roundRest:60,budget:0,voice:'en',audio:'music',title:'Jag & Kroppen',med:300,
         filters:new Set(),cut:{A:new Set(),B:new Set(),C:new Set(),D:new Set(),E:new Set(),X:new Set()},open:null};
 let loaded=null,lastLog=null,history=[],lastDone=null,days={};
 const $=id=>document.getElementById(id);
@@ -437,12 +459,13 @@ function saveState(){
   const cut=Date.now()-70*864e5,keep={};
   Object.entries(days).forEach(([k,v])=>{if(new Date(k).getTime()>cut)keep[k]=v});
   days=keep;
-  Store.set({history,lastDone,days,voice:st.voice,audio:st.audio,title:st.title});
+  Store.set({history,lastDone,days,voice:st.voice,audio:st.audio,title:st.title,med:st.med});
 }
 async function loadState(){
   const d=await Store.get();if(!d)return;
   history=Array.isArray(d.history)?d.history.slice(0,5):[];
   lastDone=d.lastDone||null;days=d.days||{};
+  if(d.med)st.med=d.med;
   if(d.title){st.title=d.title;applyTitle()}
   if(d.voice){st.voice=d.voice;$('vSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===st.voice))}
   if(d.audio){st.audio=d.audio;$('aSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.a===st.audio))}
@@ -569,6 +592,19 @@ function tone(f,d,g,type){
   n.gain.exponentialRampToValueAtTime(.0001,t+d);
   o.connect(n);n.connect(ac.destination);o.start(t);o.stop(t+d+.02);
 }
+/* mjuk klocka till meditationen — sinus, långt avklingande, ingen skarp attack */
+function bowl(){
+  if(!ac)return;
+  const t=ac.currentTime;
+  [[288,.30,0],[576,.13,.02],[864,.05,.05]].forEach(([f,g,d0])=>{
+    const o=ac.createOscillator(),n=ac.createGain();
+    o.type='sine';o.frequency.value=f;
+    n.gain.setValueAtTime(0,t+d0);
+    n.gain.linearRampToValueAtTime(g,t+d0+.08);
+    n.gain.exponentialRampToValueAtTime(.0001,t+d0+3.4);
+    o.connect(n);n.connect(ac.destination);o.start(t+d0);o.stop(t+d0+3.5);
+  });
+}
 const SND={
   tick :()=>tone(980,.09,.34),
   go   :()=>tone(1320,.62,.40),
@@ -592,7 +628,11 @@ const nameFor=n=>st.voice==='en'?spoken(n):n;
 let wl=null;
 async function awake(on){try{if(on){if(!wl&&'wakeLock'in navigator)wl=await navigator.wakeLock.request('screen')}
   else if(wl){await wl.release();wl=null}}catch(e){}}
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&running&&!paused){awake(true);frame()}});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible')return;
+  if(running&&!paused){awake(true);frame()}
+  if(medRunning){awake(true);medFrame()}
+});
 
 /* ════ TIMER ════ */
 let seq=[],marks=[],total=0,t0=0,pacc=0,pat=null,running=false,paused=false,cur=null,raf=null,
@@ -689,6 +729,41 @@ function finish(){
   $('dHint').textContent='';show('done');
 }
 
+/* ════ MEDITATION ════
+   Ringen börjar hel och krymper jämnt till noll över den valda tiden — bågen ritas
+   om varje bildruta, ingen CSS-övergång som skulle rycka.
+   Ljudläget rörs inte: ambient musik i andra appar fortsätter spela. */
+const ARC=2*Math.PI*88;
+let medRunning=false,medT0=0,medRaf=null,medLastNum=-1;
+function launchMed(){
+  unlock();
+  medT0=performance.now();medRunning=true;medLastNum=-1;
+  $('medArc').style.strokeDasharray=ARC;
+  $('medArc').style.strokeDashoffset=0;          /* hel ring vid start */
+  $('medNum').textContent=Math.round(st.med/60);
+  $('medHint').classList.remove('gone');
+  setTimeout(()=>$('medHint').classList.add('gone'),4500);
+  show('med');awake(true);medFrame();
+}
+function medFrame(){
+  if(!medRunning)return;
+  const e=(performance.now()-medT0)/1000,left=st.med-e;
+  if(left<=0)return endMed(true);
+  $('medArc').style.strokeDashoffset=(ARC*(e/st.med)).toFixed(2);
+  const n=Math.ceil(left/60);
+  if(n!==medLastNum){$('medNum').textContent=n;medLastNum=n}
+  medRaf=requestAnimationFrame(medFrame);
+}
+function endMed(complete){
+  medRunning=false;cancelAnimationFrame(medRaf);awake(false);
+  if(complete){
+    $('medArc').style.strokeDashoffset=ARC;      /* tom ring */
+    $('medNum').textContent='0';
+    bowl();
+    setTimeout(()=>show('home'),2600);
+  } else show('home');
+}
+
 /* ════ KALENDER ════ */
 const z=d=>d.getUTCFullYear()+p2(d.getUTCMonth()+1)+p2(d.getUTCDate())+'T'+p2(d.getUTCHours())+p2(d.getUTCMinutes())+p2(d.getUTCSeconds())+'Z';
 function toCal(){
@@ -755,6 +830,17 @@ function card(p,nk){
     '<button class="go" data-g="'+p.key+'">Starta</button></div></div>';
   return d;
 }
+function medCard(){
+  const open=st.open==='M';
+  const d=document.createElement('div');d.className='pass'+(open?' open':'');
+  d.innerHTML='<button class="hd" data-o="M">'+
+    '<div class="hd-r"><span class="hd-n">Meditation</span><span class="hd-t">'+mmss(st.med)+'</span></div>'+
+    '<div class="hd-m">Stillhet – ta en stund för dig själv</div></button>'+
+    '<div class="exs"><div class="medset"><div class="pills" id="medPills">'+
+      MED_OPTS.map(o=>'<button class="pill'+(st.med===o?' on':'')+'" data-m="'+o+'">'+(o/60)+' min</button>').join('')+
+    '</div></div><div class="foot"><button class="go solo" data-med="1">Starta</button></div></div>';
+  return d;
+}
 function render(){
   renderWeek();
   $('pills').innerHTML=FILTERS.map(f=>'<button class="pill'+(st.filters.has(f.id)?' on':'')+'" data-f="'+f.id+'">'+f.label+'</button>').join('');
@@ -762,15 +848,13 @@ function render(){
   const nk=nextKey(),main=$('list'),extra=$('extras');main.innerHTML='';extra.innerHTML='';
   if(loaded)main.appendChild(card(loaded,nk));
   BASE.forEach(p=>(p.extra?extra:main).appendChild(card(p,nk)));
+  extra.appendChild(medCard());
 }
 $('keys').innerHTML=Object.entries(LIB).filter(([,e])=>e.c).map(([n,e])=>'<div><b>'+e.c+'</b>'+n+'</div>').join('');
 $('affBody').innerHTML=AFF.map((t,i)=>'<p><b>'+(i+1)+'</b><span>'+t+'</span></p>').join('');
 
 /* ════ EVENTS ════ */
 const byKey=k=>k==='X'?loaded:BASE.find(p=>p.key===k);
-$('aff').querySelector('button').onclick=()=>{
-  const a=$('aff');a.classList.toggle('open');
-  a.querySelector('button span:last-child').textContent=a.classList.contains('open')?'▴':'▾'};
 $('pills').onclick=e=>{
   const f=e.target.dataset.f;if(!f)return;
   if(st.filters.has(f))st.filters.delete(f);
@@ -784,14 +868,18 @@ $('hist').onclick=e=>{
 };
 function listClick(e){
   const g=e.target.closest('[data-g]'),c=e.target.closest('[data-c]'),
-        r=e.target.closest('[data-x]'),h=e.target.closest('[data-o]');
+        r=e.target.closest('[data-x]'),h=e.target.closest('[data-o]'),
+        m=e.target.closest('[data-m]'),md=e.target.closest('[data-med]');
+  if(md)return launchMed();
+  if(m){st.med=+m.dataset.m;saveState();return render()}
   if(g)return launch(byKey(g.dataset.g));
   if(c)return copyCode(byKey(c.dataset.c));
   if(r){const s=st.cut[r.dataset.p];s.has(r.dataset.x)?s.delete(r.dataset.x):s.add(r.dataset.x);return render()}
   if(h){st.open=st.open===h.dataset.o?null:h.dataset.o;render()}
 }
 $('list').onclick=listClick;$('extras').onclick=listClick;
-document.querySelectorAll('.disc>button').forEach(b=>b.onclick=()=>{
+$('med').onclick=()=>{if(medRunning)endMed(false)};
+document.querySelectorAll('.disc>button,.aff>button').forEach(b=>b.onclick=()=>{
   const d=b.parentElement;d.classList.toggle('open');
   b.querySelector('span:last-child').textContent=d.classList.contains('open')?'▴':'▾'});
 $('titleIn').oninput=e=>{st.title=e.target.value.trim()||'Jag & Kroppen';
