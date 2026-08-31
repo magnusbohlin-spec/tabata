@@ -86,6 +86,8 @@ button{cursor:pointer}
 
 .exs{display:none;border-top:1px solid var(--line)}
 .pass.open .exs{display:block}
+.blk{padding:11px 16px 5px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--pump);font-weight:600;background:rgba(255,255,255,.02)}
 .row{display:flex;align-items:center;gap:12px;padding:11px 16px;font-size:13.5px;border-bottom:1px solid var(--line)}
 .row:active{background:var(--card2)}
 .n{font-size:11px;color:var(--dimmer);width:15px;flex:none;font-weight:500}
@@ -98,7 +100,7 @@ button{cursor:pointer}
 .foot{display:flex;border-top:1px solid var(--line)}
 .foot button{flex:1;padding:15px 0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .foot button.go{color:var(--pump);font-weight:600;border-left:1px solid var(--line)}
-.foot button.solo{border-left:none}
+.foot button+button{border-left:1px solid var(--line)}
 .foot button:active{background:var(--card2)}
 .medset{padding:15px 16px}
 
@@ -127,6 +129,35 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 .keys{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;font-size:11.5px;color:var(--dim)}
 .keys div{padding:4px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}
 .keys b{color:var(--pump);font-weight:600;width:26px;flex:none}
+
+/* ══ HELBILD (för klocktimer) ══ */
+#sheet{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.shHead{padding:24px 20px 16px;border-bottom:1px solid var(--line);flex:none}
+.shHead h2{font-size:23px;font-weight:600;letter-spacing:-.02em;margin:0}
+.shHead .m{font-size:11.5px;color:var(--dim);margin-top:6px;letter-spacing:.02em}
+.shBody{padding:0 0 30px}
+.shBlk{padding:22px 20px 8px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--pump);font-weight:600;display:flex;align-items:center;gap:10px}
+.shBlk::after{content:"";flex:1;height:1px;background:var(--line)}
+.shRow{display:flex;gap:14px;padding:12px 20px;align-items:baseline}
+.shRow .i{font-size:13px;color:var(--dimmer);width:16px;flex:none;font-weight:500}
+.shRow .t{font-size:19px;font-weight:500;letter-spacing:-.01em;line-height:1.3;flex:1}
+.shRow .s{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);flex:none}
+.shFoot{border-top:1px solid var(--line);display:flex;flex:none}
+.shFoot button{flex:1;padding:18px 0 calc(18px + env(safe-area-inset-bottom));
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);font-weight:600}
+.shFoot button:active{background:var(--card)}
+
+/* ══ FRÅGA ══ */
+#ask{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(5,12,34,.93);padding:28px;z-index:50}
+#ask.on{display:flex}
+.askBox{background:var(--card);border:1px solid var(--line2);border-radius:10px;
+  width:100%;max-width:330px;overflow:hidden}
+.askBox p{margin:0;padding:26px 22px;font-size:16px;line-height:1.5;text-align:center}
+.askBox .r{display:flex;border-top:1px solid var(--line)}
+.askBox .r button{flex:1;padding:16px 0;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.askBox .r button+button{border-left:1px solid var(--line);color:var(--pump);font-weight:600}
 
 /* ══ KÖR ══ */
 #run{position:relative}
@@ -169,15 +200,11 @@ select{width:100%;background:var(--card);border:1px solid var(--line);border-rad
 .rfoot button:active{background:var(--card)}
 
 /* ══ MEDITATION ══ */
-/* .medmode svärtar html och body så att även säkerhetszonerna högst upp
-   och längst ner blir svarta — annars lyser appens marinblå igenom där */
 html.medmode,body.medmode{background:#000}
 #med{background:#000;color:#fff;align-items:center;justify-content:center;position:relative}
 .medwrap{position:relative;width:min(70vw,290px);height:min(70vw,290px);
   display:flex;align-items:center;justify-content:center}
 .medwrap svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
-/* ingen non-scaling-stroke här: den räknar streckmönstret i skärmpixlar
-   och gör att dasharray inte matchar cirkelns ritade omkrets */
 .medwrap circle{fill:none;stroke-width:.9}
 .mtrack{stroke:rgba(255,255,255,.13)}
 .mfill{stroke:rgba(255,255,255,.88);stroke-linecap:butt}
@@ -201,7 +228,7 @@ html.medmode,body.medmode{background:#000}
 <section id="home" class="screen on">
   <div class="mast">
     <h1 id="title">Jag &amp; Kroppen</h1>
-    <div class="sport"><span>Surf · Klättring · MTB</span></div>
+    <div class="sport"><span>Surf · Klättring · Drag</span></div>
   </div>
   <div class="week" id="week"></div>
 
@@ -248,7 +275,7 @@ html.medmode,body.medmode{background:#000}
           <input type="range" id="wR" min="15" max="60" step="5" value="30"></div>
         <div class="dial"><div class="dial-t"><span class="lbl">Vila</span><span class="dial-v" id="rV">15 s</span></div>
           <input type="range" id="rR" min="5" max="45" step="5" value="15"></div>
-        <div class="dial"><div class="dial-t"><span class="lbl">Mellan omgångar</span><span class="dial-v" id="rrV">60 s</span></div>
+        <div class="dial"><div class="dial-t"><span class="lbl">Mellan block</span><span class="dial-v" id="rrV">60 s</span></div>
           <input type="range" id="rrR" min="0" max="120" step="15" value="60"></div>
         <div class="dial-t" style="margin-bottom:7px"><span class="lbl">Tidsram</span></div>
         <select id="budget">
@@ -257,7 +284,7 @@ html.medmode,body.medmode{background:#000}
           <option value="1500">Max 25 min</option><option value="1800">Max 30 min</option>
           <option value="2400">Max 40 min</option>
         </select>
-        <div class="rowflex"><span class="lbl">Omgångar</span>
+        <div class="rowflex"><span class="lbl">Varv</span>
           <div class="seg" id="rSeg"><button data-r="1">1</button><button data-r="2" class="on">2</button><button data-r="3">3</button></div></div>
         <div class="rowflex"><span class="lbl">Röst</span>
           <div class="seg" id="vSeg"><button data-v="en" class="on">EN</button><button data-v="sv">SV</button><button data-v="off">Av</button></div></div>
@@ -272,6 +299,12 @@ html.medmode,body.medmode{background:#000}
       <div class="body"><div class="keys" id="keys"></div></div>
     </div>
   </div>
+</section>
+
+<section id="sheet" class="screen">
+  <div class="shHead"><h2 id="shTitle"></h2><div class="m" id="shMeta"></div></div>
+  <div class="shBody" id="shBody"></div>
+  <div class="shFoot"><button id="shClose">Stäng</button></div>
 </section>
 
 <section id="run" class="screen">
@@ -309,6 +342,13 @@ html.medmode,body.medmode{background:#000}
   <div class="hint" id="dHint"></div>
 </section>
 
+<div id="ask">
+  <div class="askBox">
+    <p>Genomförde du passet?</p>
+    <div class="r"><button id="askNo">Nej</button><button id="askYes">Ja</button></div>
+  </div>
+</div>
+
 <script>
 const AFF=[
  'Jag är en närvarande och kärleksfull förälder, och jag gör mitt bästa för min familj.',
@@ -320,23 +360,35 @@ const AFF=[
 
 /* ════ BIBLIOTEK ════
    c=kod · sp=engelskt uttal · tags: bar/weight/jump
-   park = utegymsvariant · gym = laddad variant
-   side: 'alt' full tid per sida (växlar per omgång) | 'split' halva tiden per sida  */
+   park = utegymsvariant · gym = laddad variant · ball = medicinbollsvariant
+   side: 'alt' full tid per sida (växlar per varv) | 'split' halva tiden per sida  */
 const LIB={
+ /* ── drag & häng ── */
  'Pull-ups':{c:'PU',tags:['bar'],alt:['Chin-ups','Inverted row','Superman pull'],gym:'Lat pulldown'},
- 'Chin-ups':{c:'CU',tags:['bar'],alt:['Inverted row','Superman pull']},
+ 'Chin-ups':{c:'CU',tags:['bar'],alt:['Pull-ups','Inverted row','Superman pull']},
  'Scapular pull-ups':{c:'SU',sp:'Scapular pull ups',tags:['bar'],alt:['Prone Y-T-W','Superman pull']},
  'Dead hang':{c:'DH',tags:['bar'],alt:['Inverted row','Superman pull']},
+ 'Archer row':{c:'AR',tags:['bar'],side:'split',alt:['Inverted row','Superman pull']},
  'Inverted row':{c:'IR',tags:['bar'],alt:['Superman pull','Prone Y-T-W'],gym:'Hantelrodd'},
- 'Superman pull':{c:'SM',tags:[],alt:['Prone Y-T-W'],gym:'Face pull',park:'Inverted row'},
- 'Prone Y-T-W':{c:'YW',sp:'Y T W raise',tags:[],alt:['Superman pull']},
+ 'Superman pull':{c:'SM',tags:[],alt:['Prone Y-T-W'],gym:'Face pull',park:'Inverted row',ball:'Rygglyft på boll'},
+ 'Prone Y-T-W':{c:'YW',sp:'Y T W raise',tags:[],alt:['Superman pull'],ball:'Rygglyft på boll'},
  'Renegade row':{c:'RR',tags:['weight'],alt:['Plank shoulder taps','Superman pull'],park:'Inverted row'},
- 'Plank shoulder taps':{c:'ST',tags:[],alt:['Bear crawl','Hollow rocks','Plank']},
- 'Bear crawl':{c:'BC',tags:[],alt:['Plank shoulder taps','Plank']},
+ 'Plank shoulder taps':{c:'ST',tags:[],alt:['Hollow rocks','Plank'],ball:'Stir the pot'},
  'Dips':{c:'DI',tags:['bar'],alt:['Diamond push-up','Push-up']},
- 'Hanging knee tuck':{c:'HK',tags:['bar'],side:'split',alt:['Cross-body mountain climbers','Russian twist']},
+ 'Hanging knee tuck':{c:'HK',tags:['bar'],side:'split',alt:['Cross-body mountain climbers','Russian twist'],ball:'Bolltuck'},
  'Hanging leg raise':{c:'HL',tags:['bar'],alt:['Hollow rocks','Dead bugs']},
 
+ /* ── tryck ── */
+ 'Plyometric push-up':{c:'PP',tags:['jump'],alt:['Tempo push-up','Diamond push-up']},
+ 'Explosiv push-up':{c:'EP',sp:'Explosive push-up',tags:['jump'],alt:['Tempo push-up','Push-up']},
+ 'Diamond push-up':{c:'DP',tags:[],alt:['Push-up']},
+ 'Pike push-up':{c:'PK',tags:[],alt:['Push-up'],gym:'Axelpress hantel',park:'Dips'},
+ 'Tempo push-up':{c:'TP',tags:[],alt:['Push-up'],ball:'Push-up m. fötter på boll'},
+ 'Push-up':{c:'PS',tags:[],alt:['Knä-push-up'],gym:'Bänkpress hantel',ball:'Push-up m. fötter på boll'},
+ 'Knä-push-up':{c:'KP',sp:'Knee push-up',tags:[],alt:['Plank']},
+ 'Bottoms-up hold':{c:'BH',sp:'Bottom position hold',tags:[],alt:['Plank','Push-up']},
+
+ /* ── ben (nedtonat: pendlingen täcker cykelbenen) ── */
  'Enbensknäböj':{c:'EK',sp:'Single leg squat',tags:['weight'],side:'alt',alt:['Split squat','Reverse lunge'],
    gym:'Bulgarian split squat',park:'Bulgarian split squat'},
  'Bulgarian split squat':{c:'BS',tags:[],side:'alt',alt:['Split squat','Reverse lunge']},
@@ -347,57 +399,52 @@ const LIB={
  'Jumping lunges':{c:'JL',tags:['jump'],side:'split',alt:['Reverse lunge','Split squat']},
  'Jump squat':{c:'JS',tags:['jump'],alt:['Skater hops','Tempo squat','Wall sit'],gym:'Goblet squat'},
  'Skater hops':{c:'SK',tags:['jump'],alt:['Lateral lunge','Tempo squat']},
- 'Tempo squat':{c:'TS',tags:[],alt:['Wall sit'],gym:'Goblet squat'},
- 'Wall sit':{c:'WS',tags:[],alt:['Tempo squat']},
- 'Glute bridge':{c:'GB',tags:[],alt:['Enbens glute bridge'],gym:'Hip thrust m. skivstång'},
- 'Enbens glute bridge':{c:'EG',sp:'Single leg glute bridge',tags:[],side:'alt',alt:['Enbens RDL','Glute bridge']},
+ 'Tempo squat':{c:'TS',tags:[],alt:['Wall sit'],gym:'Goblet squat',ball:'Väggknäböj med boll'},
+ 'Wall sit':{c:'WS',tags:[],alt:['Tempo squat'],ball:'Väggknäböj med boll'},
+ 'Glute bridge':{c:'GB',tags:[],alt:['Enbens glute bridge'],gym:'Hip thrust m. skivstång',ball:'Hamstring curl på boll'},
+ 'Enbens glute bridge':{c:'EG',sp:'Single leg glute bridge',tags:[],side:'alt',alt:['Enbens RDL','Glute bridge'],ball:'Hamstring curl på boll'},
  'Enbens RDL':{c:'SR',sp:'Single leg R D L',tags:[],side:'alt',alt:['Enbens glute bridge','Glute bridge']},
 
- 'Plyometric push-up':{c:'PP',tags:['jump'],alt:['Tempo push-up','Diamond push-up']},
- 'Explosiv push-up':{c:'EP',sp:'Explosive push-up',tags:['jump'],alt:['Tempo push-up','Push-up']},
- 'Diamond push-up':{c:'DP',tags:[],alt:['Push-up']},
- 'Pike push-up':{c:'PK',tags:[],alt:['Push-up'],gym:'Axelpress hantel',park:'Dips'},
- 'Tempo push-up':{c:'TP',tags:[],alt:['Push-up']},
- 'Push-up':{c:'PS',tags:[],alt:['Knä-push-up'],gym:'Bänkpress hantel'},
- 'Knä-push-up':{c:'KP',sp:'Knee push-up',tags:[],alt:['Plank']},
-
- 'Hollow rocks':{c:'HR',tags:[],alt:['Dead bugs'],park:'Hanging leg raise'},
- 'Hollow hold':{c:'HH',tags:[],alt:['Hollow rocks','Plank']},
- 'Dead bugs':{c:'DB',tags:[],alt:['Bird dog','Hollow rocks']},
+ /* ── bål & rotation ── */
+ 'Hollow rocks':{c:'HR',tags:[],alt:['Hollow hold','Dead bugs'],park:'Hanging leg raise',ball:'Bollväxling'},
+ 'Hollow hold':{c:'HH',tags:[],alt:['Hollow rocks','Plank'],ball:'Bollrollout'},
+ 'Dead bugs':{c:'DB',tags:[],alt:['Bird dog','Hollow rocks'],ball:'Bollväxling'},
  'Bird dog':{c:'BD',tags:[],side:'split',alt:['Dead bugs','Plank']},
  'Russian twist':{c:'RT',tags:[],alt:['Dead bugs']},
- 'Plank':{c:'PL',tags:[],alt:['Dead bugs']},
- 'Side plank w/ dips':{c:'SD',sp:'Side plank with dips',tags:[],side:'split',alt:['Copenhagen plank','Side plank','Russian twist']},
- 'Side plank':{c:'SL',tags:[],side:'split',alt:['Plank']},
+ 'Plank':{c:'PL',tags:[],alt:['Dead bugs'],ball:'Stir the pot'},
+ 'Side plank w/ dips':{c:'SD',sp:'Side plank with dips',tags:[],side:'split',alt:['Copenhagen plank','Side plank','Russian twist'],ball:'Sidoplanka på boll'},
+ 'Side plank':{c:'SL',tags:[],side:'split',alt:['Plank'],ball:'Sidoplanka på boll'},
  'Copenhagen plank':{c:'CP',tags:[],side:'split',alt:['Side plank','Plank']},
- 'Cross-body mountain climbers':{c:'CM',tags:[],side:'split',alt:['Mountain climbers','Russian twist']},
+ 'Cross-body mountain climbers':{c:'CM',tags:[],side:'split',alt:['Mountain climbers','Russian twist'],ball:'Bolltuck'},
  'Mountain climbers':{c:'MC',tags:[],side:'split',alt:['Squat thrust']},
- 'Sit-ups':{c:'SI',tags:[],alt:['Hollow rocks','Dead bugs']},
+ 'Sit-ups':{c:'SI',tags:[],alt:['Hollow rocks','Dead bugs'],ball:'Bollväxling'},
  'Sido-sit-up':{c:'SS',sp:'Side sit up',tags:[],side:'split',alt:['Russian twist','Side plank']},
  'Diagonalt benlyft':{c:'DL',sp:'Diagonal leg raise',tags:[],alt:['Dead bugs','Hollow rocks']},
  'Toe touch':{c:'TT',tags:[],alt:['Sit-ups','Hollow rocks']},
  'Rullning sida till sida':{c:'RS',sp:'Side to side roll',tags:[],side:'split',alt:['Russian twist','Dead bugs']},
  'Jackknife':{c:'JK',tags:[],alt:['Toe touch','Sit-ups']},
- 'Tuck-ups':{c:'TU',sp:'Tuck ups',tags:[],alt:['Hollow rocks','Dead bugs']},
+ 'Tuck-ups':{c:'TU',sp:'Tuck ups',tags:[],alt:['Hollow rocks','Dead bugs'],ball:'Bolltuck'},
  'Saxsparkar':{c:'SX',sp:'Flutter kicks',tags:[],alt:['Hollow rocks','Dead bugs']},
  'Windshield wipers':{c:'WW',tags:[],side:'split',alt:['Russian twist','Dead bugs']},
  'Reverse crunch':{c:'RC',tags:[],alt:['Dead bugs','Hollow rocks']},
 
+ /* ── helkropp ── */
  'Pop-up burpee':{c:'BP',tags:['jump'],alt:['Burpee utan hopp','Squat thrust']},
  'Burpee utan hopp':{c:'BU',sp:'No jump burpee',tags:[],alt:['Squat thrust']},
  'Squat thrust':{c:'SH',tags:[],alt:['Tempo squat']},
 
- 'Cat–Cow':{c:'CC',sp:'Cat cow',tags:[],alt:['Thoracic rotation']},
- 'Down dog → cobra':{c:'DC',sp:'Downward dog to cobra',tags:[],alt:['Cat–Cow']},
- "World's greatest stretch":{c:'WG',sp:'Worlds greatest stretch',tags:[],side:'split',alt:['Djup squat med rotation']},
- 'Djup squat med rotation':{c:'DS',sp:'Deep squat with rotation',tags:[],side:'split',alt:["World's greatest stretch"]},
- '90/90 höftrotation':{c:'NN',sp:'Ninety ninety hip rotation',tags:[],side:'split',alt:['Djup squat med rotation']},
- 'Thoracic rotation':{c:'OB',sp:'Open book rotation',tags:[],side:'split',alt:['Cat–Cow']},
- 'Höftböjarstretch':{c:'HF',sp:'Hip flexor stretch',tags:[],side:'split',alt:["World's greatest stretch"]},
- 'Wall slides':{c:'WA',tags:[],alt:['Prone Y-T-W']},
- 'Framåtfällning rak rygg':{c:'FF',sp:'Standing forward fold',tags:[],alt:['Down dog → cobra']},
- 'Fotledsrock':{c:'FR',sp:'Ankle rocks',tags:[],side:'split',alt:['Djup squat med rotation']},
+ /* ── träningsboll (uppblåsbar) ── */
+ 'Bolltuck':{c:'BT',sp:'Ball tuck',tags:[],alt:['Mountain climbers','Tuck-ups','Plank']},
+ 'Bollväxling':{c:'BX',sp:'Ball pass',tags:[],alt:['Dead bugs','Hollow rocks']},
+ 'Hamstring curl på boll':{c:'HC',sp:'Ball hamstring curl',tags:[],alt:['Glute bridge','Enbens glute bridge']},
+ 'Stir the pot':{c:'SP',sp:'Stir the pot',tags:[],alt:['Plank','Plank shoulder taps']},
+ 'Push-up m. fötter på boll':{c:'PF',sp:'Feet on ball push-up',tags:[],alt:['Push-up','Tempo push-up']},
+ 'Sidoplanka på boll':{c:'SO',sp:'Ball side plank',tags:[],side:'split',alt:['Side plank','Plank']},
+ 'Rygglyft på boll':{c:'RY',sp:'Ball back extension',tags:[],alt:['Superman pull','Prone Y-T-W']},
+ 'Bollrollout':{c:'BO',sp:'Ball rollout',tags:[],alt:['Hollow hold','Plank']},
+ 'Väggknäböj med boll':{c:'VB',sp:'Ball wall squat',tags:[],alt:['Wall sit','Tempo squat']},
 
+ /* ── gymvarianter ── */
  'Lat pulldown':{sp:'Lat pulldown',tags:[],alt:[]},
  'Hantelrodd':{sp:'Dumbbell row',tags:[],alt:[]},
  'Face pull':{sp:'Face pull',tags:[],alt:[]},
@@ -409,27 +456,28 @@ const LIB={
 };
 const BYCODE={};Object.entries(LIB).forEach(([n,e])=>{if(e.c)BYCODE[e.c]=n});
 
+/* Passen: 10 stationer = block A (1–5) + block B (6–10).
+   Tyngdpunkt på drag, häng och stark överkropp för surf och klättring —
+   benen nedtonade eftersom pendlingen täcker det. */
 const BASE=[
- {key:'A',name:'Klätter & drag',focus:'Överkropp · grepp',
-  ex:['Pull-ups','Reverse lunge','Diamond push-up','Hollow rocks','Cossack squat',
-      'Renegade row','Enbens glute bridge','Pike push-up','Hanging knee tuck','Pop-up burpee']},
- {key:'B',name:'Ben & power',focus:'MTB · surf',
-  ex:['Enbensknäböj','Plyometric push-up','Lateral lunge','Russian twist','Jumping lunges',
-      'Inverted row','Glute bridge','Dead bugs','Jump squat','Pop-up burpee']},
- {key:'C',name:'Helkropp & rotation',focus:'Surf · kondition',
-  ex:['Pop-up burpee','Renegade row','Cossack squat','Cross-body mountain climbers','Explosiv push-up',
-      'Lateral lunge','Side plank w/ dips','Pull-ups','Russian twist','Reverse lunge']},
- /* noSub: strykning tar bort stationen helt — D och E är menyer att beskära */
+ {key:'A',name:'Häng & drag',focus:'Grepp · rygg · klättring',
+  ex:['Pull-ups','Diamond push-up','Hanging knee tuck','Cossack squat','Renegade row',
+      'Scapular pull-ups','Pike push-up','Hollow rocks','Enbens glute bridge','Pop-up burpee']},
+ {key:'B',name:'Pop-up & press',focus:'Surf · explosivitet',
+  ex:['Pop-up burpee','Inverted row','Explosiv push-up','Side plank w/ dips','Reverse lunge',
+      'Chin-ups','Plyometric push-up','Cross-body mountain climbers','Jump squat','Hollow hold']},
+ {key:'C',name:'Paddel & rotation',focus:'Axlar · bål · uthållighet',
+  ex:['Archer row','Russian twist','Tempo push-up','Lateral lunge','Dead hang',
+      'Prone Y-T-W','Windshield wipers','Plank shoulder taps','Copenhagen plank','Pop-up burpee']},
+ /* noSub: strykning tar bort stationen helt — D är en meny att beskära */
  {key:'D',name:'Core för klättring',focus:'Mage · bål',extra:true,noSub:true,w:40,r:20,rr:0,rounds:1,
   ex:['Sit-ups','Side plank','Windshield wipers','Hollow hold','Sido-sit-up',
       'Hanging knee tuck','Reverse crunch','Copenhagen plank','Toe touch','Mountain climbers',
-      'Jackknife','Saxsparkar','Tuck-ups']},
- {key:'E',name:'Rörlighet',focus:'Höfter · bröstrygg · axlar',extra:true,noSub:true,w:60,r:10,rr:0,rounds:1,
-  ex:['Cat–Cow','Down dog → cobra',"World's greatest stretch",'Djup squat med rotation',
-      '90/90 höftrotation','Thoracic rotation','Wall slides','Framåtfällning rak rygg']}
+      'Jackknife','Saxsparkar','Tuck-ups']}
 ];
 const MED_OPTS=[180,300,600,900,1200];
 const FILTERS=[
+ {id:'ball',label:'Träningsboll',block:[]},
  {id:'park',label:'Utegym',block:['weight'],solo:'gym'},
  {id:'gym',label:'Fullt gym',block:[],solo:'park'},
  {id:'nobar',label:'Ingen stång',block:['bar']},
@@ -438,8 +486,8 @@ const FILTERS=[
 ];
 
 let st={rounds:2,work:30,rest:15,roundRest:60,budget:0,voice:'en',audio:'music',title:'Jag & Kroppen',med:300,
-        filters:new Set(),cut:{A:new Set(),B:new Set(),C:new Set(),D:new Set(),E:new Set(),X:new Set()},open:null};
-let loaded=null,lastLog=null,history=[],lastDone=null,days={};
+        filters:new Set(),cut:{A:new Set(),B:new Set(),C:new Set(),D:new Set(),X:new Set()},open:null};
+let loaded=null,lastLog=null,history=[],lastDone=null,days={},sheetPass=null;
 const $=id=>document.getElementById(id);
 const mmss=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 const p2=n=>String(n).padStart(2,'0');
@@ -448,6 +496,8 @@ const spoken=n=>(LIB[n]&&LIB[n].sp)?LIB[n].sp:n;
 const sideOf=(p,n)=>(p&&p.sides&&p.sides[n]!==undefined)?p.sides[n]:(LIB[n]?LIB[n].side||null:null);
 const cfg=p=>({work:p.w||st.work, rest:p.r!==undefined?p.r:st.rest,
                roundRest:p.rr!==undefined?p.rr:st.roundRest, rounds:p.rounds||st.rounds});
+/* block A = första halvan, block B = andra — bara för pass med jämnt antal ≥6 */
+const splitAt=n=>(n>=6&&n%2===0)?n/2:0;
 
 /* ════ LAGRING ════ */
 const KEY='intervall:v1';
@@ -480,8 +530,10 @@ function applyTitle(){$('title').textContent=st.title;$('titleIn').value=st.titl
 function blocked(){const b=new Set();FILTERS.forEach(f=>st.filters.has(f.id)&&f.block.forEach(t=>b.add(t)));return b}
 const ok=(n,bad)=>!((LIB[n]&&LIB[n].tags)||[]).some(t=>bad.has(t));
 function preMap(n){
-  if(st.filters.has('gym')&&LIB[n]&&LIB[n].gym)return LIB[n].gym;
-  if(st.filters.has('park')&&LIB[n]&&LIB[n].park)return LIB[n].park;
+  const L=LIB[n]||{};
+  if(st.filters.has('gym')&&L.gym)return L.gym;
+  if(st.filters.has('park')&&L.park)return L.park;
+  if(st.filters.has('ball')&&L.ball)return L.ball;
   return n;
 }
 function resolveOne(start,orig,bad,cut,used){
@@ -507,7 +559,7 @@ function resolve(p){
     const dur=(n,R)=>10+R*n*(C.work+C.rest)-C.rest+(R-1)*(C.roundRest-C.rest);
     outer: for(let R=rounds;R>=1;R--) for(let n=live.length;n>=4;n--) if(dur(n,R)<=st.budget){
       if(n<live.length){const k=[];for(let i=0;i<n;i++)k.push(live[Math.round(i*(live.length-1)/(n-1))]);live=[...new Set(k)]}
-      if(R<rounds||live.length<rows.length)note='Nedskalat till '+R+' omgångar och '+live.length+' stationer.';
+      if(R<rounds||live.length<rows.length)note='Nedskalat till '+R+' varv och '+live.length+' stationer.';
       rounds=R;break outer;
     }
   }
@@ -595,8 +647,6 @@ function tone(f,d,g,type){
   n.gain.exponentialRampToValueAtTime(.0001,t+d);
   o.connect(n);n.connect(ac.destination);o.start(t);o.stop(t+d+.02);
 }
-/* mjuk klocka till meditationen — sinus, långt avklingande, ingen skarp attack.
-   iOS kan suspenda ljudkontexten under en lång tyst stund, så vi väcker den först. */
 function bowl(){
   if(!ac)return;
   const play=()=>{
@@ -612,7 +662,6 @@ function bowl(){
   };
   if(ac.state!=='running')ac.resume().then(play).catch(play); else play();
 }
-/* tyst bärton som håller ljudkontexten vaken genom hela meditationen */
 let medKeep=null;
 function keepAlive(on){
   if(!ac)return;
@@ -632,7 +681,7 @@ const SND={
   swap :()=>{tone(1180,.07,.36);setTimeout(()=>tone(1180,.07,.36),110)},
   end  :()=>[0,190,380].forEach((d,i)=>setTimeout(()=>tone(660+i*260,.35,.36),d))
 };
-const PHR={ready:{en:'Get ready',sv:'Gör dig redo'},round:{en:'Round',sv:'Omgång'},
+const PHR={ready:{en:'Get ready',sv:'Gör dig redo'},round:{en:'Block',sv:'Block'},
   done:{en:'done',sv:'klar'},finish:{en:'Workout complete. Nice work.',sv:'Passet är klart.'}};
 function say(txt){
   if(st.voice==='off'||!window.speechSynthesis)return;
@@ -699,17 +748,20 @@ function frame(){
 const upnext=(k,v)=>{$('upK').textContent=k;$('upV').textContent=v||''};
 function enter(s){
   $('run').className='screen on '+s.type;
+  const half=splitAt(cur.ex.length);
   if(s.type==='prep'){
     $('ph').textContent='Förbered';$('exN').textContent=cur.ex[0].n;$('sd').textContent='';
-    upnext('Först ut','');$('nxi').textContent='';$('rRound').textContent='Omgång 1/'+cur.rounds;
+    upnext('Först ut','');$('nxi').textContent='';$('rRound').textContent='Varv 1/'+cur.rounds;
     say(PHR.ready[st.voice==='en'?'en':'sv']+'. '+nameFor(cur.ex[0].n));
   }
   if(s.type==='work'){
     $('ph').textContent='Kör';$('exN').textContent=s.name;
-    $('rRound').textContent='Omgång '+s.round+'/'+cur.rounds;
+    $('rRound').textContent='Varv '+s.round+'/'+cur.rounds;
     $('sd').textContent=s.side==='alt'?(s.round%2?'Vänster sida':'Höger sida'):s.side==='split'?'Byte efter halva':'';
-    upnext(s.next?(s.nextIsRound?'Efter omgångsvilan':'Nästa'):'Sista stationen',s.next||'');
-    $('nxi').textContent='Station '+(s.idx+1)+' av '+cur.ex.length;
+    upnext(s.next?(s.nextIsRound?'Efter vilan':'Nästa'):'Sista stationen',s.next||'');
+    $('nxi').textContent = half
+      ? 'Block '+(s.idx<half?'A':'B')+' · '+((s.idx%half)+1)+' av '+half
+      : 'Station '+(s.idx+1)+' av '+cur.ex.length;
     mark(s.round,s.idx);SND.go();
   }
   if(s.type==='rest'){
@@ -718,10 +770,10 @@ function enter(s){
     SND.rest();setTimeout(()=>say(nameFor(s.next)),480);
   }
   if(s.type==='roundrest'){
-    $('ph').textContent='Omgång klar';$('exN').textContent='Vila';$('sd').textContent='';
-    upnext('Startar omgång '+(s.round+1)+' med',s.next);$('nxi').textContent='';
+    $('ph').textContent='Varv klart';$('exN').textContent='Vila';$('sd').textContent='';
+    upnext('Startar varv '+(s.round+1)+' med',s.next);$('nxi').textContent='';
     SND.round();const en=st.voice==='en';
-    setTimeout(()=>say(PHR.round[en?'en':'sv']+' '+s.round+' '+PHR.done[en?'en':'sv']),620);
+    setTimeout(()=>say((en?'Round':'Varv')+' '+s.round+' '+PHR.done[en?'en':'sv']),620);
   }
 }
 function drawStrip(n,R){const e=$('strip');e.innerHTML='';
@@ -736,22 +788,52 @@ function skip(){if(!running)return;const e=el(),i=at(e);if(i<0)return finish();
   const j=(marks[i]-e)*1000;if(paused)pat-=j;else t0-=j;lastW=-1;frame()}
 function stop(){running=false;paused=false;cancelAnimationFrame(raf);awake(false);
   window.speechSynthesis&&speechSynthesis.cancel();show('home')}
+function logDay(key){days[iso(new Date())]=key==='X'?'★':key;saveState()}
 function finish(){
   running=false;cancelAnimationFrame(raf);awake(false);SND.end();
   say(PHR.finish[st.voice==='en'?'en':'sv']);
   lastLog={p:cur,start:tStart,end:new Date()};
-  days[iso(new Date())]=cur.key==='X'?'★':cur.key;
+  logDay(cur.key);
   if(!cur.extra&&cur.key!=='X')lastDone=cur.key;
   saveState();render();
   $('dMeta').innerHTML=(cur.key==='X'?cur.name:'Pass '+cur.key+' — '+cur.name)+'<br>'+
-    cur.ex.length+' stationer · '+cur.rounds+' omgångar · '+cur.C.work+'/'+cur.C.rest+'<br>'+mmss(total);
+    cur.ex.length+' stationer · '+cur.rounds+' varv · '+cur.C.work+'/'+cur.C.rest+'<br>'+mmss(total);
   $('dHint').textContent='';show('done');
 }
 
-/* ════ MEDITATION ════
-   Ringen börjar hel och krymper jämnt till noll över den valda tiden — bågen ritas
-   om varje bildruta, ingen CSS-övergång som skulle rycka.
-   Ljudläget rörs inte: ambient musik i andra appar fortsätter spela. */
+/* ════ HELBILD — lista att köra mot klockans timer ════ */
+function openSheet(p){
+  const R=resolve(p);
+  if(!R.ex.length){flash('Inga stationer kvar i det passet.');return}
+  sheetPass=p;
+  $('shTitle').textContent=p.key==='X'?p.name:'Pass '+p.key+' — '+p.name;
+  $('shMeta').textContent=R.C.work+'/'+R.C.rest+' · '+R.rounds+' varv · '+
+    R.ex.length+' stationer · '+mmss(secondsOf(R.ex,R.rounds,R.C));
+  const half=splitAt(R.ex.length);
+  let h='';
+  R.ex.forEach((e,i)=>{
+    if(i===0)h+='<div class="shBlk">'+(half?'Block A':'Övningar')+'</div>';
+    if(half&&i===half)h+='<div class="shBlk">Block B</div>';
+    h+='<div class="shRow"><span class="i">'+(half?(i%half)+1:i+1)+'</span>'+
+       '<span class="t">'+e.n+'</span>'+
+       (e.side==='alt'?'<span class="s">per sida</span>':e.side==='split'?'<span class="s">15/15</span>':'')+
+       '</div>';
+  });
+  $('shBody').innerHTML=h;
+  show('sheet');awake(true);
+}
+function closeSheet(){$('ask').classList.add('on')}
+function answerSheet(done){
+  $('ask').classList.remove('on');awake(false);
+  if(done&&sheetPass){
+    logDay(sheetPass.key);
+    if(!sheetPass.extra&&sheetPass.key!=='X')lastDone=sheetPass.key;
+    saveState();
+  }
+  sheetPass=null;render();show('home');
+}
+
+/* ════ MEDITATION ════ */
 const ARC=2*Math.PI*88;
 let medRunning=false,medT0=0,medRaf=null,medLastNum=-1;
 function medMode(on){
@@ -765,7 +847,7 @@ function launchMed(){
   medMode(true);keepAlive(true);
   medT0=performance.now();medRunning=true;medLastNum=-1;
   $('medArc').style.strokeDasharray=ARC;
-  $('medArc').style.strokeDashoffset=0;          /* hel ring vid start */
+  $('medArc').style.strokeDashoffset=0;
   $('medNum').textContent=Math.round(st.med/60);
   $('medHint').classList.remove('gone');
   setTimeout(()=>$('medHint').classList.add('gone'),4500);
@@ -781,8 +863,9 @@ function medFrame(){
   medRaf=requestAnimationFrame(medFrame);
 }
 function endMed(complete){
-  medRunning=false;cancelAnimationFrame(medRaf);awake(false);  if(complete){
-    $('medArc').style.strokeDashoffset=ARC;      /* tom ring */
+  medRunning=false;cancelAnimationFrame(medRaf);awake(false);
+  if(complete){
+    $('medArc').style.strokeDashoffset=ARC;
     $('medNum').textContent='0';
     bowl();
     setTimeout(()=>{keepAlive(false);medMode(false);show('home')},2600);
@@ -797,7 +880,7 @@ function toCal(){
    'BEGIN:VEVENT','UID:'+Date.now()+'@jagochkroppen','DTSTAMP:'+z(new Date()),
    'DTSTART:'+z(lastLog.start),'DTEND:'+z(lastLog.end),
    'SUMMARY:'+(p.key==='X'?p.name:'Pass '+p.key+' — '+p.name),
-   'DESCRIPTION:'+p.ex.map((e,i)=>(i+1)+'. '+e.n).join('\\n')+'\\n\\n'+p.rounds+' omgångar · '+p.C.work+'/'+p.C.rest,
+   'DESCRIPTION:'+p.ex.map((e,i)=>(i+1)+'. '+e.n).join('\\n')+'\\n\\n'+p.rounds+' varv · '+p.C.work+'/'+p.C.rest,
    'CATEGORIES:Träning','END:VEVENT','END:VCALENDAR'].join('\r\n');
   const url=URL.createObjectURL(new Blob([body],{type:'text/calendar;charset=utf-8'}));
   const a=document.createElement('a');a.href=url;a.download='pass-'+iso(new Date())+'.ics';
@@ -832,27 +915,33 @@ function renderWeek(){
 const nextKey=()=>{const o=['A','B','C'];return lastDone?o[(o.indexOf(lastDone)+1)%3]:'A'};
 function card(p,nk){
   const R=resolve(p),open=st.open===p.key,secs=secondsOf(R.ex,R.rounds,R.C),
-        isNext=!loaded&&!p.extra&&p.key===nk;
-  let num=0;
-  const rows=R.rows.map(r=>{
+        isNext=!loaded&&!p.extra&&p.key===nk,half=splitAt(R.ex.length);
+  let num=0,rows='';
+  R.rows.forEach(r=>{
     const dropped=r.dropped;
-    if(!dropped)num++;
+    if(!dropped){
+      if(num===0&&half)rows+='<div class="blk">Block A</div>';
+      if(num===half&&half)rows+='<div class="blk">Block B</div>';
+      num++;
+    }
     const side=dropped?null:((LIB[r.n]||{}).side||sideOf(p,r.orig));
-    return '<div class="row'+(dropped?' cut':'')+'" data-x="'+r.orig+'" data-p="'+p.key+'">'+
-      '<span class="n">'+(dropped?'–':num)+'</span><span class="b">'+
+    rows+='<div class="row'+(dropped?' cut':'')+'" data-x="'+r.orig+'" data-p="'+p.key+'">'+
+      '<span class="n">'+(dropped?'–':(half?((num-1)%half)+1:num))+'</span><span class="b">'+
       (r.sw?'<span class="old">'+r.orig+'</span> <span class="new">'+r.n+'</span>':r.n)+'</span>'+
       (side==='alt'?'<span class="tag">per sida</span>':side==='split'?'<span class="tag">halva/halva</span>':'')+
       '<span class="x">'+(dropped?'↺':'✕')+'</span></div>';
-  }).join('');
+  });
   const d=document.createElement('div');d.className='pass'+(open?' open':'')+(isNext?' next':'');
   d.innerHTML='<button class="hd" data-o="'+p.key+'">'+
     '<div class="hd-r"><span class="hd-n">'+p.name+'</span>'+
       (isNext?'<span class="up">Nästa</span>':'')+'<span class="hd-t">'+mmss(secs)+'</span></div>'+
-    '<div class="hd-m">'+p.focus+' · '+R.ex.length+' stationer · '+R.rounds+' omg · '+R.C.work+'/'+R.C.rest+
-      (p.extra?' · fast takt':'')+'</div>'+
+    '<div class="hd-m">'+p.focus+' · '+(half?'2×'+half:R.ex.length+' stationer')+' · '+
+      R.rounds+' varv · '+R.C.work+'/'+R.C.rest+(p.extra?' · fast takt':'')+'</div>'+
     (R.note?'<div class="hd-note">'+R.note+'</div>':'')+sparkline(R.ex.length,R.rounds)+'</button>'+
-    '<div class="exs">'+rows+'<div class="foot"><button data-c="'+p.key+'">Kopiera kod</button>'+
-    '<button class="go" data-g="'+p.key+'">Starta</button></div></div>';
+    '<div class="exs">'+rows+'<div class="foot">'+
+      '<button data-c="'+p.key+'">Kod</button>'+
+      '<button data-sheet="'+p.key+'">Helbild</button>'+
+      '<button class="go" data-g="'+p.key+'">Starta</button></div></div>';
   return d;
 }
 function medCard(){
@@ -861,7 +950,7 @@ function medCard(){
   d.innerHTML='<button class="hd" data-o="M">'+
     '<div class="hd-r"><span class="hd-n">Meditation</span><span class="hd-t">'+mmss(st.med)+'</span></div>'+
     '<div class="hd-m">Stillhet – ta en stund för dig själv</div></button>'+
-    '<div class="exs"><div class="medset"><div class="pills" id="medPills">'+
+    '<div class="exs"><div class="medset"><div class="pills">'+
       MED_OPTS.map(o=>'<button class="pill'+(st.med===o?' on':'')+'" data-m="'+o+'">'+(o/60)+' min</button>').join('')+
     '</div></div><div class="foot"><button data-medtest="1">Testa klockan</button>'+
     '<button class="go" data-med="1">Starta</button></div></div>';
@@ -881,6 +970,9 @@ $('affBody').innerHTML=AFF.map((t,i)=>'<p><b>'+(i+1)+'</b><span>'+t+'</span></p>
 
 /* ════ EVENTS ════ */
 const byKey=k=>k==='X'?loaded:BASE.find(p=>p.key===k);
+$('aff').querySelector('button').onclick=()=>{
+  const a=$('aff');a.classList.toggle('open');
+  a.querySelector('button span:last-child').textContent=a.classList.contains('open')?'▴':'▾'};
 $('pills').onclick=e=>{
   const f=e.target.dataset.f;if(!f)return;
   if(st.filters.has(f))st.filters.delete(f);
@@ -896,18 +988,22 @@ function listClick(e){
   const g=e.target.closest('[data-g]'),c=e.target.closest('[data-c]'),
         r=e.target.closest('[data-x]'),h=e.target.closest('[data-o]'),
         m=e.target.closest('[data-m]'),md=e.target.closest('[data-med]'),
-        mt=e.target.closest('[data-medtest]');
+        mt=e.target.closest('[data-medtest]'),sh=e.target.closest('[data-sheet]');
   if(mt){unlock();bowl();return}
   if(md)return launchMed();
   if(m){st.med=+m.dataset.m;saveState();return render()}
+  if(sh)return openSheet(byKey(sh.dataset.sheet));
   if(g)return launch(byKey(g.dataset.g));
   if(c)return copyCode(byKey(c.dataset.c));
   if(r){const s=st.cut[r.dataset.p];s.has(r.dataset.x)?s.delete(r.dataset.x):s.add(r.dataset.x);return render()}
   if(h){st.open=st.open===h.dataset.o?null:h.dataset.o;render()}
 }
 $('list').onclick=listClick;$('extras').onclick=listClick;
+$('shClose').onclick=closeSheet;
+$('askYes').onclick=()=>answerSheet(true);
+$('askNo').onclick=()=>answerSheet(false);
 $('med').onclick=()=>{if(medRunning)endMed(false)};
-document.querySelectorAll('.disc>button,.aff>button').forEach(b=>b.onclick=()=>{
+document.querySelectorAll('.disc>button').forEach(b=>b.onclick=()=>{
   const d=b.parentElement;d.classList.toggle('open');
   b.querySelector('span:last-child').textContent=d.classList.contains('open')?'▴':'▾'});
 $('titleIn').oninput=e=>{st.title=e.target.value.trim()||'Jag & Kroppen';
