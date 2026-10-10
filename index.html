@@ -284,6 +284,8 @@ html.medmode,body.medmode{background:#000}
         <div class="rowflex"><span class="lbl">Ljud</span>
           <div class="seg" id="aSeg"><button data-a="music" class="on">Med musik</button><button data-a="solo">Ensamt</button></div></div>
         <div class="note" id="aNote"></div>
+        <button class="wide" id="bTestSnd" style="min-width:0;width:100%;margin-top:16px">Testa ljudet</button>
+        <div class="note" id="sndMsg"></div>
       </div>
     </div>
 
@@ -546,19 +548,27 @@ function audioNote(){
     ? 'Pipen läggs ovanpå musiken utan att sänka den. Kräver att ringläget är på — ljudlöst tystar appen.'
     : 'Appen hörs även med telefonen på ljudlöst, men pausar musik i andra appar.';
 }
+/* Safari parkerar en overksam ljudkontext i 'suspended' ELLER 'interrupted'.
+   Allt utom 'running' måste väckas, annars spelas tonerna tyst.            */
 function unlock(){
   audioSession();
-  if(ac){ac.state==='suspended'&&ac.resume();return}
+  if(ac){if(ac.state!=='running'){try{ac.resume()}catch(e){}}return}
   ac=new(window.AudioContext||window.webkitAudioContext)();
   const b=ac.createBuffer(1,1,22050),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0);
 }
-function tone(f,d,g,type){
-  if(!ac)return;
+function play(f,d,g,type){
   const o=ac.createOscillator(),n=ac.createGain(),t=ac.currentTime;
   o.type=type||'triangle';o.frequency.value=f;
   n.gain.setValueAtTime(0,t);n.gain.linearRampToValueAtTime(g,t+.006);
   n.gain.setValueAtTime(g,t+d*.7);n.gain.exponentialRampToValueAtTime(.0001,t+d);
   o.connect(n);n.connect(ac.destination);o.start(t);o.stop(t+d+.02);
+}
+/* Varje ton väcker kontexten först — en ton som hamnar i en sovande kontext
+   försvinner spårlöst, och det är precis så ljudet tystnar mitt i ett pass. */
+function tone(f,d,g,type){
+  if(!ac)return;
+  if(ac.state==='running')return play(f,d,g,type);
+  try{ac.resume().then(()=>play(f,d,g,type)).catch(()=>{})}catch(e){}
 }
 function bowl(){
   if(!ac)return;
@@ -599,6 +609,7 @@ async function awake(on){try{if(on){if(!wl&&'wakeLock'in navigator)wl=await navi
   else if(wl){await wl.release();wl=null}}catch(e){}}
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='visible')return;
+  if(running||medRunning)unlock();   /* iOS pausar ljudet när appen går i bakgrunden */
   if(running&&!paused){awake(true);frame()}
   if(medRunning){awake(true);medFrame()}
   if($('sheet').classList.contains('on'))awake(true);
@@ -757,7 +768,7 @@ function build(ex,o){
   return s;
 }
 function startRun(){
-  unlock();
+  unlock();keepAlive(true);
   const o=opts();curEx=sel.slice();curName=$('saveName').value.trim()||'Dagens pass';
   seq=build(curEx,o);marks=[];let a=0;seq.forEach(x=>{a+=x.dur;marks.push(a)});total=a;
   t0=performance.now();pacc=0;pat=null;tStart=new Date();
@@ -819,7 +830,7 @@ function togglePause(){if(!running)return;
   else{pat=performance.now();paused=true;$('bPause').textContent='Fortsätt';awake(false);cancelAnimationFrame(raf)}}
 function skip(){if(!running)return;const e=el(),i=at(e);if(i<0)return finish();
   const j=(marks[i]-e)*1000;if(paused)pat-=j;else t0-=j;lastW=-1;frame()}
-function stopRun(){running=false;paused=false;cancelAnimationFrame(raf);awake(false);
+function stopRun(){running=false;paused=false;cancelAnimationFrame(raf);awake(false);keepAlive(false);
   window.speechSynthesis&&speechSynthesis.cancel();show('home')}
 function logSession(ex,name){
   days[iso(new Date())]='✓';
@@ -829,6 +840,7 @@ function logSession(ex,name){
 }
 function finish(){
   running=false;cancelAnimationFrame(raf);awake(false);SND.end();
+  setTimeout(()=>keepAlive(false),1200);
   say(st.voice==='en'?'Workout complete. Nice work.':'Passet är klart.');
   lastLog={name:curName,ex:curEx.slice(),start:tStart,end:new Date(),o:opts()};
   logSession(curEx,curName);
@@ -1051,6 +1063,16 @@ $('vSeg').onclick=e=>{if(e.target.tagName!=='BUTTON')return;st.voice=e.target.da
 $('aSeg').onclick=e=>{if(e.target.tagName!=='BUTTON')return;st.audio=e.target.dataset.a;
   $('aSeg').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===e.target));
   audioSession();audioNote();saveState();unlock();SND.go()};
+/* Spelar hela sekvensen: tre korta pip, startton, paustons. */
+$('bTestSnd').onclick=()=>{
+  unlock();
+  [0,700,1400].forEach(d=>setTimeout(SND.tick,d));
+  setTimeout(SND.go,2100);
+  setTimeout(SND.rest,3300);
+  setTimeout(()=>{$('sndMsg').textContent='Hörde du pip-pip-pip, en ljus ton och en mörkare? '+
+    (st.audio==='music'?'Om inte: slå av ljudlöst, eller välj Ensamt här ovan.'
+                       :'Om inte: höj volymen.')},4400);
+};
 document.addEventListener('touchstart',unlock,{once:true});
 document.addEventListener('click',unlock,{once:true});
 applyTitle();audioNote();syncDials();renderHome();loadState();
